@@ -1,0 +1,20 @@
+/* src/app/app.component.css */
+.navbar {
+  position: relative;
+  z-index: 10; /* Esto asegura que la navbar esté por encima de la sidebar */
+}
+
+.content {
+  margin-left: 250px; /* Deja espacio para la sidebar */
+  padding-top: 60px;  /* Para que no se solape con la navbar */
+}
+
+a {
+  border-radius: 10px;
+  padding: 5px 10px;
+  transition: background-color 0.3s ease;
+}
+
+a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

@@ -1,0 +1,107 @@
+/* Estilo para el formulario de login */
+form {
+    width: 400px;
+    margin: 0 auto;
+    background-color: #282828;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #1DB954;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+form input[type="email"],
+form input[type="password"] {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #383838;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #383838;
+    color: white;
+}
+
+form input[type="email"]:focus,
+form input[type="password"]:focus {
+    border-color: #1DB954;
+    outline: none;
+}
+
+form button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #1DB954;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+    background-color: #1ed760;
+}
+
+form .btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #383838;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+form .btn:hover {
+    background-color: #1DB954;
+}
+
+.alert {
+    color: white;
+    background-color: #dc3545;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 12px;
+    background-color: #1DB954;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    width: 200px;
+    margin: 0 auto;
+    display: block;
+    text-decoration: none;
+}
+
+button:hover {
+    background-color: #1ed760;
+}
+
+/* Añadir el fondo negro al body */
+body {
+    background-color: #121212;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    
+    font-family: Arial, sans-serif;
+}

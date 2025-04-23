@@ -1,0 +1,36 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+parameters:
+    # Configuración de parámetros, si la necesitas
+    # ...
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # Configuración específica para UserActivityLogger
+    App\Service\UserActivityLogger:
+        arguments:
+            $userActivityLogger: '@monolog.logger.user_activity'
+            $security: '@security.helper'
+
+    App\EventListener\SecurityListener:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\Security\AccessDeniedHandler:
+        arguments:
+            $twig: '@twig'
+            $security: '@security.helper'

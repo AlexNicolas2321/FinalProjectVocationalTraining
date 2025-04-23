@@ -1,0 +1,32 @@
+/* src/app/sidebar/sidebar.component.css */
+.sidebar {
+    width: 250px;
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #343a40; /* Fondo oscuro */
+    padding-top: 20px;
+    z-index: 1; /* Asegura que la sidebar esté detrás de la navbar */
+    margin-top: 80px;
+  }
+  
+  .sidebar a {
+    text-decoration: none;
+    color: #ffffff;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    
+  }
+  
+  .sidebar a:hover {
+    background-color: #495057; /* Color al pasar el ratón */
+  }
+  
+  .sidebar h2 {
+    color: #ffffff;
+    font-size: 24px;
+    text-align: center;
+  }
+  

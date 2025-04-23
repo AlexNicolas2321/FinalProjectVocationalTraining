@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <title>Página Principal de Spotify Simple</title>
+</head>
+<body>
+ <header>
+        <!-- Imagen de inicio -->
+        <img id="img_spotify" src="/img/mySpotify.jpg" alt="Imagen 1">
+        
+        <div class="search-wrapper">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Song...">
+            </div>
+            <div id="searchResults"></div> <!-- Ahora está fuera del .search-container -->
+        </div>
+
+        
+        <!-- Botón de login (Se oculta si el usuario está logueado) -->
+        <div id="logged_in">
+
+        <a href="/login" class="button">
+            <button id="log_in_button">Log in</button>
+        </a>
+        <a href="/register" class="button">
+            <button id="log_in_button">Sign up</button>
+        </a>
+        </div>
+
+
+
+        <!-- Mensaje de bienvenida -->
+        <p id="welcomeMessage" style="display: none;"></p>
+    </header>
+
+<main>
+    <div id="options">
+        <h1>Your library</h1>
+        <button id="mySongs">mySongs</button>
+        <button id="myPlaylists">Playlists</button>
+        <button id="Playlists_user">Playlists_user</button>
+        <button id="createPlaylistButton">CreateNewPlaylist</button>
+    </div>
+
+    <div id="base">
+        <h1 id="h1_Playlists_title" class="h1_title">Playlists</h1>
+        <div id="all_playlists"></div>
+
+        <h1 id="h1_Songs_title" class="h1_title">Songs</h1>
+        <div id="all_songs"></div>    
+    </div>
+</main>
+
+<footer>
+    <div id="current-song">
+        <img id="song-image" src="">
+        <h2 id="song-title"></h2>
+        <audio id="audio-player" controls>
+            <source id="audio-source" src="" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
+    </div>
+
+    <div class="navigation-buttons">
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+    </div>
+</footer>
+
+<script>
+    // Pasar las canciones a una variable de JavaScript
+    const songs = {{ songs|json_encode|raw }};
+    const playList = {{ playList|json_encode|raw }};
+</script>
+
+<script src="{{ asset('js/script.js') }}"></script>
+
+
+<script>
+    var isLoggedIn = {{ app.session.get('user_logged_in', false) ? 'true' : 'false' }};
+    var username = "{{ app.session.get('email', '') }}";
+</script>
+
+
+
+</body>
+</html>

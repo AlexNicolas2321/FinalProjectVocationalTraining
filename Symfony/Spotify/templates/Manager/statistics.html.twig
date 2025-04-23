@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Estadísticas{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="header-controls">
+        <h2>STATISTICS</h2>
+        <a href="{{ path('app_logout') }}" class="logout-button">Log out</a>
+    </div>
+
+    <!-- Gráfico de Playlists Más Reproducidas -->
+    <h3>Playlists most Replayed</h3>
+    <canvas id="reproduccionesChart"></canvas>
+
+    <!-- Gráfico de Playlists Más Likeadas -->
+    <h3>Playlists most liked</h3>
+    <canvas id="likesChart"></canvas>
+
+    <!-- Gráfico de Canciones Más Reproducidas -->
+    <h3>Most replayed Songs</h3>
+    <canvas id="songsReplaysChart"></canvas>
+
+    <!-- Gráfico de Edades de Usuarios -->
+    <h3>User ages</h3>
+    <canvas id="userAgeChart"></canvas>
+
+    <!-- Gráfico de Reproducciones por Estilo de Música -->
+    <h3>Replays by style</h3>
+    <canvas id="styleReplaysChart"></canvas>
+</div>
+
+<!-- Cargar Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("{{ path('statistics_data') }}")
+    .then(response => response.json())
+    .then(data => {
+        // 🔹 PLAYLISTS MÁS REPRODUCIDAS
+        createChart(
+            "reproduccionesChart",
+            "bar",
+            data.playlist_most_replays.map(item => item.Playlist),
+            data.playlist_most_replays.map(item => item.Replays),
+            "Total Replays"
+        );
+
+        // 🔹 PLAYLISTS MÁS LIKEADAS
+        createChart(
+            "likesChart",
+            "bar",
+            data.playlist_most_likes.map(item => item.Playlist),
+            data.playlist_most_likes.map(item => item.Likes),
+            "Total Likes"
+        );
+
+        // 🔹 CANCIONES MÁS REPRODUCIDAS
+        createChart(
+            "songsReplaysChart",
+            "bar",
+            data.song_most_replays.map(item => item.Song),
+            data.song_most_replays.map(item => item.Replays),
+            "Total Replays of each Song"
+        );
+
+        // 🔹 EDADES DE USUARIOS
+        createChart(
+            "userAgeChart",
+            "bar",
+            data.obtainUserAgeData.map(item => item.Age),
+            data.obtainUserAgeData.map(item => item.ageAmount), // Cantidad de usuarios por edad
+            "User Ages"
+        );
+
+        // 🔹 REPRODUCCIONES POR ESTILO DE MÚSICA
+        createChart(
+            "styleReplaysChart",
+            "bar",
+            data.obtainSongsStyleMostReplayedData.map(item => item.Style),
+            data.obtainSongsStyleMostReplayedData.map(item => item.StyleSongReplays),
+            "Replays by style"
+        );
+    })
+    .catch(error => console.error("Error cargando los datos:", error));
+});
+
+// 🔹 Función para crear gráficos de manera más sencilla
+function createChart(canvasId, type, labels, values, label) {
+    const ctx = document.getElementById(canvasId).getContext("2d");
+    new Chart(ctx, {
+        type: type,
+        data: {
+            labels: labels,
+            datasets: [{
+                label: label,
+                data: values,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+</script>
+<style>
+    canvas {
+        max-width: 400px; 
+        max-height: 300px;
+        margin: 20px; /* Centrar */
+        display: block; /* Evitar que se expanda */
+    }
+    h3{
+          display: flex;
+            /*justify-content: center; /* Centrado horizontal */
+            /*align-items: center; /* Centrado vertical */
+            margin: 20px;
+    }
+    .header-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+    }
+
+    .logout-button {
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .logout-button:hover {
+        background-color: #c82333;
+        text-decoration: none;
+        color: white;
+    }
+</style>
+{% endblock %}
