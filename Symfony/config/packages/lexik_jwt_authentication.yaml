@@ -1,0 +1,5 @@
+lexik_jwt_authentication:
+    secret_key: '%kernel.project_dir%/config/jwt/private.pem' # Ruta de la clave privada
+    public_key: '%kernel.project_dir%/config/jwt/public.pem' # Ruta de la clave pública
+    pass_phrase: 'your-passphrase' # La misma que usaste para generar las claves
+    token_ttl: 3600 # Tiempo de expiración del token en segundos (1 hora)

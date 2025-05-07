@@ -1,0 +1,30 @@
+# Symfony
+/var/
+/vendor/
+/node_modules/
+/public/bundles/
+/translations/
+/config/jwt/
+/logs/
+
+# Docker
+*.log
+*.swp
+.env
+.docker/
+/docker-compose.override.yml
+/dataMYSQL/
+
+# IDEs y editores
+.idea/
+.vscode/
+.project
+.settings/
+
+# Node.js
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Composer
+/composer.lock

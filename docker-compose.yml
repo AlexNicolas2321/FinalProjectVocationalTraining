@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  symfony-app:
+    build: 
+      context: .    # Ubicación del Dockerfile
+      dockerfile: Dockerfile
+    container_name: symfony-linux
+    volumes:
+      - .:/var/www/symfony  # Mapeo de la carpeta Hospital al contenedor Symfony
+    working_dir: /var/www/symfony
+    ports:
+      - "8000:8000"
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+    command: tail -f /dev/null
+    networks:
+      - symfony-network
+    depends_on:      
+      - mysql
+
+  mysql:
+    image: mysql:8.0    # Imagen oficial de MySQL
+    container_name: mysql_sym
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: dawdb
+    volumes:
+      - ./dataMYSQL:/var/lib/mysql  # Mapeo de los datos de MySQL al contenedor
+    ports:
+      - "3306:3306"
+    networks:
+      - symfony-network
+
+networks:
+  symfony-network:
+    driver: bridge
