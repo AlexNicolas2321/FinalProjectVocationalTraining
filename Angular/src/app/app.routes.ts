@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
-import { RegisterComponent } from './components/register/register.component';
-
+import { HomeComponent } from './components/adminPanel/Home/Home.component';
 export const routes: Routes = [
-    {path:"register" ,component:RegisterComponent}
+    {path:"Admin" ,component:HomeComponent}
 ];
 // poner ruta por si pones una inexistente que te redirija (**)

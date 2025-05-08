@@ -1,0 +1,45 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Panel de Administración</h2>
+
+  <!-- Ver Especialidades -->
+  <div class="mb-3">
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#specialtiesList">
+      Ver Especialidades
+    </button>
+    <div class="collapse mt-2" id="specialtiesList">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let speciality of specialties">
+          {{ speciality.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Ver Roles -->
+  <div class="mb-3">
+    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#rolesList">
+      Ver Roles
+    </button>
+    <div class="collapse mt-2" id="rolesList">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let role of roles">
+          {{ role.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Ver Usuarios -->
+  <div class="mb-3">
+    <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#usersList">
+      Ver Usuarios
+    </button>
+    <div class="collapse mt-2" id="usersList">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let user of users">
+           (DNI: {{ user.dni }}) (Rol: {{ user.name }})
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

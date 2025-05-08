@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+/*namespace App\Controller;
 
 use App\Entity\Patient;
 use App\Entity\Profile;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
-class RegistroControllerv2 extends AbstractController
+class AppointmentLeadPatientController extends AbstractController
 {
     #[Route('/api/register', name: 'api_register', methods: ['POST'])]
     public function register(
@@ -23,7 +23,7 @@ class RegistroControllerv2 extends AbstractController
             return $this->json(['error' => 'Invalid JSON'], Response::HTTP_BAD_REQUEST);
         }
 
-        $patient = new Patient();
+        $patient = new ();
         $patient->setEmail($data['correo']);
         $patient->setDni($data['dni']);
         $patient->setPhone($data['telefono']);
@@ -64,3 +64,4 @@ class RegistroControllerv2 extends AbstractController
         return $this->json(['message' => 'Patient registered successfully'], Response::HTTP_CREATED);
     }
 }
+*/ 
