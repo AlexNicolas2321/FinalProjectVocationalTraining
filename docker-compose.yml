@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: symfony-linux
     volumes:
-      - .:/var/www/symfony  # Mapeo de la carpeta Hospital al contenedor Symfony
+      - .:/var/www/symfony  
     working_dir: /var/www/symfony
     ports:
       - "8000:8000"
