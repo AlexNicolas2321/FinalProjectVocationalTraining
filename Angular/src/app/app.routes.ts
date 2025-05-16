@@ -1,7 +1,12 @@
 import { Routes } from '@angular/router';
-import { RegisterComponent } from './components/register/register.component';
+import { CreateUserComponent } from './components/adminpanel/createuser/createuser.component';
+import { AdminComponent } from './layouts/admin/admin.component';
 
 export const routes: Routes = [
-    {path:"register" ,component:RegisterComponent}
+    {path:"admin" ,component:AdminComponent,children:[
+        {path:"createUser" , component:CreateUserComponent
+
+        },
+    ]}
 ];
 // poner ruta por si pones una inexistente que te redirija (**)

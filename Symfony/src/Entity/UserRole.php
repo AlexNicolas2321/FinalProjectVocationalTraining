@@ -13,7 +13,7 @@ class UserRole
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: "datetime")]
+    #[ORM\Column(type: "datetime" , nullable:true)]
     private \DateTimeInterface $assigned_at;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userRoles')]
@@ -24,6 +24,10 @@ class UserRole
     #[ORM\JoinColumn(nullable: false)]
     private Role $role;
 
+    public function __construct()
+{
+    $this->assigned_at = new \DateTime();
+}
     public function getId(): ?int
     {
         return $this->id;
