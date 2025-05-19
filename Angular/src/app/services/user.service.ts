@@ -14,4 +14,16 @@ export class UserService {
   getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl+"getAllUsers");
   }
+
+  getAllRoles(): Observable<any> {
+    return this.http.get<any>(this.apiUrl+"getAllRoles");
+  }
+  
+  createAdmin(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}admin`, userData);
+  }
+
+  createUserWithDetails(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}notAdmin`, userData);
+  }
 }

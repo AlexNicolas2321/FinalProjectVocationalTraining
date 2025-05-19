@@ -19,6 +19,10 @@ class Doctor
     #[ORM\Column(length: 100)]
     private string $last_name;
 
+    #[ORM\Column(length: 20)]
+    private string $phone;
+
+
     #[ORM\Column(length: 100)]
     private string $speciality;
 
@@ -72,6 +76,17 @@ class Doctor
         return $this;
     }
 
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+    
     public function getUser(): User
     {
         return $this->user;

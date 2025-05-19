@@ -4,7 +4,7 @@ import { AdminComponent } from './layouts/admin/admin.component';
 
 export const routes: Routes = [
     {path:"admin" ,component:AdminComponent,children:[
-        {path:"createUser" , component:CreateUserComponent
+        {path:"create_user" , component:CreateUserComponent
 
         },
     ]}
