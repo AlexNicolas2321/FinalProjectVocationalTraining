@@ -1,42 +1,35 @@
 security:
-    # Configuración de hasheo de contraseñas
-    password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+  password_hashers:
+    App\Entity\User: 'auto' 
 
-    # Proveedor actualizado para la nueva entidad 'User'
-    providers:
-        app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: email
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: dni
 
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
 
-        # Configuración de seguridad principal
-        main:
-            lazy: true
-            provider: app_user_provider
-            entry_point: App\Security\LoginAuthenticator  # Cambia el punto de entrada al login si es necesario
-            form_login:
-                login_path: app_login
-                check_path: app_login
-                default_target_path: /home
-            logout:
-                path: app_logout
-                target: /login
-            custom_authenticator: App\Security\LoginAuthenticator  # Si estás usando JWT, asegúrate de que el authenticator esté configurado correctamente
+    login:
+      pattern: ^/api/signIn
+      stateless: true
+      json_login:
+        check_path: /api/signIn
+        username_path: dni
+        password_path: password
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
-            # Definimos un firewall específico para las API o rutas protegidas por JWT
-            jwt: 
-                provider: app_user_provider  # Usamos el mismo proveedor de usuario para JWT
+    api:
+      pattern: ^/api
+      stateless: true
+      provider: app_user_provider
+      jwt: ~
 
-    # Configuración de control de acceso por roles
-    access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/doctor, roles: ROLE_DOCTOR }
-        - { path: ^/patient, roles: ROLE_PATIENT }
-        - { path: ^/profile, roles: ROLE_USER }  # Solo acceso con JWT para el perfil
+  access_control:
+
+
 

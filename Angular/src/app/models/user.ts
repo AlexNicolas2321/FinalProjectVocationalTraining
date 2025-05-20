@@ -1,13 +1,14 @@
 export interface User {
-    id: number;
-    password?:number;
+    id?: number;
+    password?:string;
     dni: string;
     user_type?:string;
     first_name?:string;
     last_name?:string;
     roleIds?: number[];   
     roleNames?: string[];
-    phone?:number;
+    phone?:string;
     speciality?:string;
+    created_at?:string;
   }
   

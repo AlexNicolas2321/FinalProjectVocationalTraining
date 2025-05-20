@@ -1,1 +1,14 @@
-<p>patient works!</p>
+<div class="d-flex" style="height: 100vh; overflow: hidden;">
+  
+    <!-- Sidebar fijo -->
+    <aside class="bg-dark text-white p-3" style="width: 250px;">
+        <app-sidebar-patient></app-sidebar-patient>
+    </aside>
+  
+    <!-- Contenido principal con scroll vertical -->
+    <main class="flex-grow-1 overflow-auto p-4">
+      <router-outlet></router-outlet>
+    </main>
+  
+  </div>
+  

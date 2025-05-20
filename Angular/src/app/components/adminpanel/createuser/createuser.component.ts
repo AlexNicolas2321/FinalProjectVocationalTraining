@@ -17,12 +17,12 @@
     created_user:User={
       id: 0,
       dni: '',
-      password:123,
+      password:'',
       user_type: '',
       first_name: '',
       last_name: '',
       roleIds: [],
-      phone:123456789,
+      phone:'',
       speciality:""
     }
     constructor(private userService: UserService) {}

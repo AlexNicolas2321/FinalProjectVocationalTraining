@@ -19,14 +19,14 @@ class Patient
     #[ORM\Column(length: 100)]
     private string $last_name;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20,unique:true)]
     private ?string $phone = null;
 
     #[ORM\Column(type: 'date')]
     private \DateTimeInterface $birth_date;
 
     #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $submitted_at;
+    private \DateTimeInterface $created_at;
 
     #[ORM\OneToOne(inversedBy: 'patient', targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -89,14 +89,14 @@ class Patient
         return $this;
     }
 
-    public function getSubmittedAt(): \DateTimeInterface
+    public function getCreatedAt(): \DateTimeInterface
     {
-        return $this->submitted_at;
+        return $this->created_at;
     }
 
-    public function setSubmittedAt(\DateTimeInterface $submitted_at): self
+    public function setCreatedAt(\DateTimeInterface $submitted_at): self
     {
-        $this->submitted_at = $submitted_at;
+        $this->created_at = $submitted_at;
         return $this;
     }
 

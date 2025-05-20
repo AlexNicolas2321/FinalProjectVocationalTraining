@@ -6,16 +6,18 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface , PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100,unique:true)]
     private string $dni;
 
     #[ORM\Column(length: 255)]
@@ -71,6 +73,22 @@ class User
         return $this->userRoles;
     }
 
+
+    
+    public function getRoles(): array
+{
+    $roles = [];
+
+    foreach ($this->userRoles as $userRole) {
+        $roles[] = $userRole->getRole();
+    }
+
+    $roles[] = 'ROLE_USER';
+
+    return array_unique($roles);
+}
+
+
     public function addUserRole(UserRole $userRole): self
     {
         if (!$this->userRoles->contains($userRole)) {
@@ -122,4 +140,10 @@ class User
         $this->receptionist = $receptionist;
         return $this;
     }
+    public function getUserIdentifier(): string
+    {
+        return $this->dni; 
+    }
+    public function eraseCredentials(): void {}
+
 }

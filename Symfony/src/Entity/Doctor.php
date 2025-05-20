@@ -19,7 +19,7 @@ class Doctor
     #[ORM\Column(length: 100)]
     private string $last_name;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20,unique:true)]
     private string $phone;
 
 
