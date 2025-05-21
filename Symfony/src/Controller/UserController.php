@@ -124,4 +124,23 @@ class UserController extends AbstractController
 
         return $this->json(['message' => 'Usuario creado correctamente', 'id' => $user->getId()], 201);
     }
+
+
+   /* #[Route('/api/roles/{id}', name: 'test_user_roles', methods: ['GET'])]
+    public function testUserRoles(int $id): JsonResponse
+    {
+        $user = $this->em->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            return new JsonResponse(['error' => "User with ID $id not found"], 404);
+        }
+
+        // Usamos el método getRoles() que devuelve los roles
+        $roles = $user->getRoles();
+
+        return new JsonResponse([
+            'user_id' => $user->getId(),
+            'roles' => $roles,
+        ]);
+    }*/
 }

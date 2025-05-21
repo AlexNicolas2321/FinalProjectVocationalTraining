@@ -1,0 +1,54 @@
+<div class="container mt-5">
+    <h2 class="mb-4">Crear nuevo tratamiento</h2>
+    
+    <form (ngSubmit)="createTreatment()" #treatmentForm="ngForm">
+      
+      <!-- Nombre -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Nombre del tratamiento</label>
+        <input 
+          type="text" 
+          id="name" 
+          class="form-control" 
+          name="name" 
+          [(ngModel)]="newTreatment.name" 
+          required>
+      </div>
+  
+      <!-- Descripción -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea 
+          id="description" 
+          class="form-control" 
+          name="description" 
+          [(ngModel)]="newTreatment.description" 
+          rows="3"
+          required></textarea>
+      </div>
+  
+      <!-- Precio -->
+      <div class="mb-3">
+        <label for="price" class="form-label">Precio (€)</label>
+        <input 
+          type="number" 
+          id="price" 
+          class="form-control" 
+          name="price" 
+          [(ngModel)]="newTreatment.price" 
+          required 
+          min="0" 
+          step="0.01">
+      </div>
+  
+      <!-- Botón -->
+      <button 
+        type="submit" 
+        class="btn btn-success" 
+        [disabled]="!treatmentForm.valid">
+        Crear tratamiento
+      </button>
+  
+    </form>
+  </div>
+  

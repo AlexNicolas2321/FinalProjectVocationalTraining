@@ -26,7 +26,7 @@ class LoginController extends AbstractController
     }
 
     #[Route('/api/signIn', name: 'api_signin', methods: ['POST'])]
-    public function signIn(Request $request): JsonResponse
+    public function signIn(Request $request)
     {
         $data = json_decode($request->getContent(), true);
         $dni = $data['dni'] ?? null;
@@ -41,9 +41,9 @@ class LoginController extends AbstractController
         $user = $this->em->getRepository(User::class)->findOneBy(['dni' => $dni]);
         
         $payload=[
-            "user_id" => $user->getId(),
+            'user_id' => $user->getId(),
             'dni' => $user->getDni(),
-            'roles' => $user->getUserRoles()
+            'roles' => $user->getRoles()
         ];
 
 
@@ -58,7 +58,7 @@ class LoginController extends AbstractController
 
         // Generar token JWT
         $token = $this->jwtManager->createFromPayload($user,$payload);
-
-        return new JsonResponse(['token' => $token]);
+        
+        return new JsonResponse(['token'=>$token]);    
     }
 }

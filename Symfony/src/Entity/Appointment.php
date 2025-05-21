@@ -16,17 +16,9 @@ class Appointment
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $date;
 
-    #[ORM\Column(length: 255)]
-    private string $treatment_name;
-
-    #[ORM\Column(type: 'text')]
-    private string $treatment_description;
-
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
-    private string $treatment_price;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $notes;
+    private ?string $observations;
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $created_at;
@@ -41,6 +33,10 @@ class Appointment
 
     #[ORM\OneToOne(mappedBy: 'appointment', targetEntity: Invoice::class, cascade: ['persist', 'remove'])]
     private ?Invoice $invoice = null;
+
+    #[ORM\ManyToOne(inversedBy: 'appointment', targetEntity: Treatment::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Treatment $treatment = null;
 
     public function getId(): ?int
     {
@@ -58,47 +54,14 @@ class Appointment
         return $this;
     }
 
-    public function getTreatmentName(): string
+    public function getObservations(): ?string
     {
-        return $this->treatment_name;
+        return $this->observations;
     }
 
-    public function setTreatmentName(string $treatment_name): self
+    public function setObservations(?string $observations): self
     {
-        $this->treatment_name = $treatment_name;
-        return $this;
-    }
-
-    public function getTreatmentDescription(): string
-    {
-        return $this->treatment_description;
-    }
-
-    public function setTreatmentDescription(string $treatment_description): self
-    {
-        $this->treatment_description = $treatment_description;
-        return $this;
-    }
-
-    public function getTreatmentPrice(): string
-    {
-        return $this->treatment_price;
-    }
-
-    public function setTreatmentPrice(string $treatment_price): self
-    {
-        $this->treatment_price = $treatment_price;
-        return $this;
-    }
-
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    public function setNotes(?string $notes): self
-    {
-        $this->notes = $notes;
+        $this->observations = $observations;
         return $this;
     }
 
@@ -147,6 +110,19 @@ class Appointment
         if ($invoice !== null && $invoice->getAppointment() !== $this) {
             $invoice->setAppointment($this);
         }
+
+        return $this;
+    }
+
+    
+    public function getTreatment(): ?Treatment
+    {
+        return $this->treatment;
+    }
+
+    public function setTreatment(Treatment $treatment): self
+    {
+        $this->treatment = $treatment;
 
         return $this;
     }

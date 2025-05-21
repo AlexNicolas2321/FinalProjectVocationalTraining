@@ -67,26 +67,25 @@ class User implements UserInterface , PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /** @return Collection<int, UserRole> */
-    public function getUserRoles(): Collection
-    {
-        return $this->userRoles;
-    }
-
+   
 
     
     public function getRoles(): array
-{
-    $roles = [];
-
-    foreach ($this->userRoles as $userRole) {
-        $roles[] = $userRole->getRole();
+    {
+        $roles = [];
+    
+        foreach ($this->userRoles as $userRole) {
+            // Suponiendo que getRole() devuelve un string con el nombre del rol
+            $role = $userRole->getRole();
+            if ($role) {
+                $roles[] = $role->getName();
+            }
+        }
+    
+        // Devuelve solo roles únicos, para evitar duplicados
+        return array_unique($roles);
     }
-
-    $roles[] = 'ROLE_USER';
-
-    return array_unique($roles);
-}
+    
 
 
     public function addUserRole(UserRole $userRole): self
