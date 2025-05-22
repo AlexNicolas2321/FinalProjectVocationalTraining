@@ -34,9 +34,7 @@ class Appointment
     #[ORM\OneToOne(mappedBy: 'appointment', targetEntity: Invoice::class, cascade: ['persist', 'remove'])]
     private ?Invoice $invoice = null;
 
-    #[ORM\ManyToOne(inversedBy: 'appointment', targetEntity: Treatment::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Treatment $treatment = null;
+    
 
     public function getId(): ?int
     {
@@ -115,15 +113,5 @@ class Appointment
     }
 
     
-    public function getTreatment(): ?Treatment
-    {
-        return $this->treatment;
-    }
-
-    public function setTreatment(Treatment $treatment): self
-    {
-        $this->treatment = $treatment;
-
-        return $this;
-    }
+    
 }

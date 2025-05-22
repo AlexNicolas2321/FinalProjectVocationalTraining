@@ -6,12 +6,16 @@ import { SignupComponent } from './components/patientpanel/signup/signup.compone
 import { SigninComponent } from './components/patientpanel/signin/signin.component';
 import { HomeComponent } from './components/patientpanel/home/home.component';
 import { CreatetreatmentComponent } from './components/adminpanel/createtreatment/createtreatment.component';
+import { AppointmenthistoryComponent } from './components/patientpanel/appointmenthistory/appointmenthistory.component';
+import { ShowappointmentsComponent } from './components/adminpanel/showappointments/showappointments.component';
+
 
 export const routes: Routes = [
     {path:"admin" ,component:AdminComponent,children:[
         { path: '', redirectTo: 'create_user', pathMatch: 'full' },
         {path:"create_user" , component:CreateUserComponent},
         {path:"create_treatment" , component:CreatetreatmentComponent},
+        {path:"get_all_appointments",component:ShowappointmentsComponent}
     ]}
     ,
   //  {path:"patient/sign_up", component: SignupComponent},
@@ -20,6 +24,7 @@ export const routes: Routes = [
         {path:"sign_up" , component:SignupComponent},
         {path:"sign_in" , component:SigninComponent},
         {path:"home" , component:HomeComponent},
+        {path:"AppointmentsHistory", component:AppointmenthistoryComponent}
 
     ]}
 ];

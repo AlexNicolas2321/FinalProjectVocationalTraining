@@ -8,30 +8,20 @@
     </div>
 </header>
 
-<!-- Services Section -->
 <section class="py-5 bg-white">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-md-4 mb-4">
-                <img src="assets/icons/odontologia.svg" class="mb-3" width="60" alt="Odontología">
-                <h5 class="fw-bold">Odontología general</h5>
-                <p class="text-muted">Tratamientos personalizados para mantener tu boca sana.</p>
-            </div>
-            <div class="col-md-4 mb-4">
-                <img src="assets/icons/implantes.svg" class="mb-3" width="60" alt="Implantes">
-                <h5 class="fw-bold">Implantes dentales</h5>
-                <p class="text-muted">Recupera la funcionalidad y estética con soluciones duraderas.</p>
-            </div>
-            <div class="col-md-4 mb-4">
-                <img src="assets/icons/ortodoncia.svg" class="mb-3" width="60" alt="Ortodoncia">
-                <h5 class="fw-bold">Ortodoncia invisible</h5>
-                <p class="text-muted">Corrige tu sonrisa con alineadores cómodos y estéticos.</p>
-
-            </div>
+      <div class="row text-center">
+        <div *ngFor="let treatment of treatments" class="col-md-4 mb-4">
+          <img [src]="treatment.img" class="mb-3" width="60" [alt]="treatment.name">
+          <h5 class="fw-bold">{{ treatment.name }}</h5>
+          <p class="text-muted">{{ treatment.description }}</p>
+          <p><strong>Doctor:</strong> {{ treatment.doctor_first_name }} {{ treatment.doctor_last_name }}</p>
+          <p><strong>Precio: </strong>{{ treatment.price | currency:'USD' }}</p>
         </div>
+      </div>
     </div>
-</section>
-
+  </section>
+  
 
 
 
@@ -76,15 +66,16 @@
                         </div>
                     </div>
 
-  <!-- Tratamiento -->
-  <div class="mb-3">
-    <label for="tratamiento" class="form-label">Tratamiento</label>
-    <select id="tratamiento" name="tratamiento" class="form-select" [(ngModel)]="treatments" required>
-      <option *ngFor="let tratamiento of treatments" [value]="tratamiento.id">
-        {{ tratamiento.name }}
-      </option>
-    </select>
-  </div>
+                    <!-- Tratamiento -->
+                    <div class="mb-3">
+                        <label for="tratamiento" class="form-label">Tratamiento</label>
+                        <select id="tratamiento" name="tratamiento" class="form-select" [(ngModel)]="selectedTreatmentId"
+                            required>
+                            <option *ngFor="let tratamiento of treatments" [value]="tratamiento.id">
+                                {{ tratamiento.name }}
+                            </option>
+                        </select>
+                    </div>
                     <!-- Enviar -->
                     <button type="submit" class="btn btn-success" [disabled]="!form.valid || !horaSeleccionada">
                         Enviar cita

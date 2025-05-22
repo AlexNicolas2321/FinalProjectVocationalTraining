@@ -16,5 +16,12 @@ export class AppointmentService {
   createAppointment(appointment: Appointment): Observable<Appointment> {
     return this.http.post<Appointment>(`${this.apiUrl}createAppointment`, appointment);
   }
+  getAllAppointments(): Observable<any[]>{
+    return this.http.get<any[]>(`${this.apiUrl}getAllAppointments`);
+  }
+  getSpecificAppointments(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}getSpecificAppointments/${id}`);
+  }
+
 
 }

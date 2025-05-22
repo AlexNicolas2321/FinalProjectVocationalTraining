@@ -24,14 +24,12 @@ class Treatment
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2)]
     private ?string $price = null;
 
-    #[ORM\OneToMany(mappedBy: 'treatment', targetEntity: Appointment::class)]
-    private Collection $appointments;
+    #[ORM\OneToOne(inversedBy: 'treatment', targetEntity: Doctor::class)]
+    #[ORM\JoinColumn(name: 'doctor_id', referencedColumnName: 'id', nullable: false, unique: true)]
+    private Doctor $doctor;
 
+    
 
-    public function __construct()
-    {
-        $this->appointments = new ArrayCollection();
-    }
 
 
     public function getId(): ?int
@@ -71,26 +69,16 @@ class Treatment
         $this->price = $price;
         return $this;
     }
-
-    public function addAppointment(Appointment $appointment): self
-{
-    if (!$this->appointments->contains($appointment)) {
-        $this->appointments[] = $appointment;
-        $appointment->setTreatment($this);
+    
+    public function getDoctor(): Doctor
+    {
+        return $this->doctor;
     }
 
-    return $this;
-}
-
-public function removeAppointment(Appointment $appointment): self
-{
-    if ($this->appointments->removeElement($appointment)) {
-        if ($appointment->getTreatment() === $this) {
-            //$appointment->setTreatment(null);
-        }
+    public function setDoctor(Doctor $doctor): self
+    {
+        $this->doctor = $doctor;
+        return $this;
     }
-
-    return $this;
-}
 
 }

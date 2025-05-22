@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DoctorRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DoctorRepository::class)]
@@ -31,11 +33,14 @@ class Doctor
     private User $user;
 
     #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Appointment::class)]
-    private $appointments;
+    private Collection $appointments;
+
+    #[ORM\OneToOne(mappedBy: 'doctor', targetEntity: Treatment::class, cascade: ['persist', 'remove'])]
+    private ?Treatment $treatment = null;
 
     public function __construct()
     {
-        $this->appointments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->appointments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,4 +125,23 @@ class Doctor
         }
         return $this;
     }
+    public function getTreatment(): ?Treatment
+    {
+        return $this->treatment;
+    }
+
+    public function setTreatment(?Treatment $treatment): self
+    {
+        $this->treatment = $treatment;
+
+        // Mantener la relación bidireccional sincronizada
+        if ($treatment !== null && $treatment->getDoctor() !== $this) {
+            $treatment->setDoctor($this);
+        }
+
+        return $this;
+    }
+
+
+ 
 }

@@ -40,7 +40,24 @@
           min="0" 
           step="0.01">
       </div>
-  
+
+      <div class="form-group">
+        <label for="doctor">Select a Doctor:</label>
+        <select
+          class="form-control"
+          id="doctor"
+          [(ngModel)]="selectedDoctorId"
+          name="doctor"
+          required
+        >
+          <option [ngValue]="null" disabled selected>Select a doctor</option>
+          <option *ngFor="let doctor of doctors" [ngValue]="doctor.id">
+          - NOMBRE: {{ doctor.firstName }} - APELLIDO: {{ doctor.lastName }} - DNI: {{ doctor.dni }} - ESPECIALIDAD: {{doctor.speciality}}
+          </option>
+        </select>
+      </div>
+      
+      
       <!-- Botón -->
       <button 
         type="submit" 

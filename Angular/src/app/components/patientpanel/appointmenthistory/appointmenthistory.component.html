@@ -1,0 +1,29 @@
+<div class="appointment-history container mt-4">
+    <h2 class="mb-4">Appointment History</h2>
+  
+    <table *ngIf="appointments.length > 0" class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Fecha</th>
+          <th>Observaciones</th>
+          <th>Nombre del doctor</th>
+          <th>Apellido del doctor</th>
+          <th>Tratamiento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of appointments">
+          <td>{{ a.date }}</td>
+          <td>{{ a.observations || 'N/A' }}</td>
+          <td>{{ a.first_name || 'N/A' }}</td>
+          <td>{{ a.last_name || 'N/A' }}</td>
+          <td>{{ a.treatment || 'N/A' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="appointments.length === 0" class="alert alert-warning">
+      No appointments found.
+    </div>
+  </div>
+  
