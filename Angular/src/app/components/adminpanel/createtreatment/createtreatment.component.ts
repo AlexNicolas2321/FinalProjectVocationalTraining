@@ -19,8 +19,8 @@ export class CreatetreatmentComponent {
  
 constructor(private treatmentService : TreatmentService, private doctorService: DoctorService){}
 
-
-newTreatment: Treatment = {
+  treatments: Treatment[] = [];
+  newTreatment: Treatment = {
   name: '',
   description: '',
   price: 0,
@@ -34,6 +34,15 @@ ngOnInit(){
     },
     error: (err) =>{
       console.log("error",err);
+    }
+  })
+
+  this.treatmentService.getAllTreatments().subscribe({
+    next : data =>{
+      this.treatments= data;    
+    } ,
+    error : err =>{
+      console.log("error traer treatments",err);
     }
   })
 }

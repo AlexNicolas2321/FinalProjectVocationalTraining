@@ -15,7 +15,9 @@ class Appointment
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $date;
-
+   
+    #[ORM\Column(length: 20)]
+    private string $status = "pending";
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $observations;
@@ -60,6 +62,21 @@ class Appointment
     public function setObservations(?string $observations): self
     {
         $this->observations = $observations;
+        return $this;
+    }
+    
+    public function getStatus(): string{
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self{
+        $allowedstatuss = ['pending', 'confirmed', 'cancelled'];
+
+        if(!in_array($status,$allowedstatuss,true)){
+            throw new \InvalidArgumentException(sprintf('Estado "%s" no válido. Los valores permitidos son: %s', $status, implode(', ', $allowedstatuss)));
+        }
+        $this->status= $status;
+
         return $this;
     }
 

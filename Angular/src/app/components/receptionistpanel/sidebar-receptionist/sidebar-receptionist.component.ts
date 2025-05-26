@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'app-sidebar-receptionist',
   imports: [RouterModule],
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  templateUrl: './sidebar-receptionist.component.html',
+  styleUrl: './sidebar-receptionist.component.css'
 })
-export class SidebarComponent {
+export class SidebarReceptionistComponent {
 
   constructor(private AuthenticationService:AuthenticationService){}
 

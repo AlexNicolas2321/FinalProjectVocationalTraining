@@ -11,6 +11,15 @@ interface AppointmentData {
   first_name: string;
   last_name: string;
   treatment: string;
+  user_dni:string;
+  patient_first_name:string;
+  doctor_last_name:string;
+  doctor_first_name:string;
+  patient_last_name:string;
+  patient_phone:string;
+  state:string;
+  editing:boolean;
+  newStatus:string;
 }
 
 @Component({
@@ -45,4 +54,22 @@ export class ShowappointmentsComponent {
     })
   }
 
+  updateStatus(id: number, status: string) {
+    this.appointmentService.editAppointment(id, status).subscribe({
+      next: (res) => {
+        // Por ejemplo, actualizar el estado en tu array local para reflejar el cambio inmediatamente
+        const appointment = this.appointments.find(a => a.id === id);
+        if (appointment) {
+          appointment.state = status;
+          appointment.editing = false;  
+        }
+        console.log('Appointment updated successfully');
+      },
+      error: (err) => {
+        
+      }
+    });
+  }
+  
+  
 }

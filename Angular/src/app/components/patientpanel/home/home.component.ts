@@ -37,12 +37,14 @@ export class HomeComponent implements OnInit {
       next: (data: Treatment[]) => {
         this.treatments = data;
         this.treatments.forEach(treatment =>{
-          if(treatment.name="Limpieza Bucal"){
+          if(treatment.name=="limpieza_bucal"){
             treatment.img="http://localhost:8000/img/limpieza_bucal.jpg";
-          }else if(treatment.name="Cita"){
+          }
+          if(treatment.name=="cita"){
             treatment.img="http://localhost:8000/img/cita.jpg";
 
-          }else if(treatment.name="Ortodoncia"){
+          }
+          if(treatment.name==="ortodoncia"){
             treatment.img="http://localhost:8000/img/ortodoncia.jpg";
 
           }

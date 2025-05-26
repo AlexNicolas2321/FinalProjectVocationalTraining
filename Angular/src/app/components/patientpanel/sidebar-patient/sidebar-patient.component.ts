@@ -10,9 +10,9 @@ import { AuthenticationService } from '../../../services/authentication.service'
 })
 export class SidebarPatientComponent {
 
-  constructor(private authenticationSerive:AuthenticationService){}
+  constructor(private authenticationService:AuthenticationService){}
 
   logout(){
-    this.authenticationSerive.logout();
+    this.authenticationService.logout();
   }
 }

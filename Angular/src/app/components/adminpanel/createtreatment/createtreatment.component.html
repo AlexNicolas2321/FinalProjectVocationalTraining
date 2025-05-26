@@ -1,3 +1,39 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Treatment List</h2>
+
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Doctor ID</th>
+        <th>Doctor First Name</th>
+        <th>Doctor Last Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se iteraría sobre treatments, por ejemplo con Angular *ngFor -->
+      <tr *ngFor="let treatment of treatments">
+        <td>{{ treatment.id }}</td>
+        <td>{{ treatment.name }}</td>
+        <td>{{ treatment.description }}</td>
+        <td>{{ treatment.price | currency }}</td>
+        <td>{{ treatment.doctorId }}</td>
+        <td>{{ treatment.doctor_first_name }}</td>
+        <td>{{ treatment.doctor_last_name }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="treatments.length === 0" class="alert alert-warning">
+    No treatments found.
+  </div>
+</div>
+
+
+
 <div class="container mt-5">
     <h2 class="mb-4">Crear nuevo tratamiento</h2>
     

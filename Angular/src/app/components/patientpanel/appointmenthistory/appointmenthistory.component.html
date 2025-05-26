@@ -9,6 +9,7 @@
           <th>Nombre del doctor</th>
           <th>Apellido del doctor</th>
           <th>Tratamiento</th>
+          <th>Estado cita</th>
         </tr>
       </thead>
       <tbody>
@@ -18,6 +19,7 @@
           <td>{{ a.first_name || 'N/A' }}</td>
           <td>{{ a.last_name || 'N/A' }}</td>
           <td>{{ a.treatment || 'N/A' }}</td>
+          <td>{{ a.state || 'N/A' }}</td>
         </tr>
       </tbody>
     </table>

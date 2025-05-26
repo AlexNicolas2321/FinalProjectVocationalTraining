@@ -6,11 +6,13 @@ use App\Entity\Appointment;
 use App\Entity\Doctor;
 use App\Entity\Patient;
 use App\Entity\Treatment;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Path;
 
 class AppointmentController extends AbstractController
 {
@@ -44,17 +46,27 @@ class AppointmentController extends AbstractController
     {
         $appointments = $em->getRepository(Appointment::class)->findAll();
 
+        
         $data = [];
         foreach ($appointments as $appointment) {
             $doctor = $em->getRepository(Doctor::class)->find($appointment->getDoctor());
+            $patient = $em->getRepository(Patient::class)->find($appointment->getPatient());
+            $user = $em->getRepository(User::class)->find($patient->getUser());
             $treatment = $doctor->getTreatment();
             $data[] = [
                 'id' => $appointment->getId(),
                 'date' => $appointment->getDate()->format('Y-m-d H:i:s'),
                 'observations' => $appointment->getObservations(),
-                'first_name' => $doctor->getFirstName(),
-                'last_name' => $doctor->getLastName(),
+                'state' => $appointment->getStatus(),
+                'doctor_first_name' => $doctor->getFirstName(),
+                'doctor_last_name' => $doctor->getLastName(),
                 'treatment' => $treatment->getName(),
+                'patient_first_name' => $patient->getFirstName(),
+                'patient_last_name' => $patient->getLastName(),
+                'patient_phone' => $patient->getPhone(),
+                'user_dni' => $user->getDni(),
+                
+
             ];
         }
 
@@ -84,10 +96,35 @@ class AppointmentController extends AbstractController
                 'first_name' => $doctor->getFirstName(),
                 'last_name' => $doctor->getLastName(),
                 'treatment' => $treatment->getName(),
+                'state' => $appointment->getStatus(),
             ];
         }
 
 
         return new JsonResponse($data, 200);
     }
+
+    #[Route('/api/editeAppointment/{id}', name: 'edit_appointments', methods: ['PATCH'])]
+    public function editeAppointment(int $id,EntityManagerInterface $em,Request $request): JsonResponse
+    {
+        $appointment = $em->getRepository(Appointment::class)->find($id);
+
+        $data = json_decode($request->getContent(), true);
+        
+        if(isset($data["status"])){
+            $appointment->setStatus($data["status"]);
+        }
+        $em->flush();
+
+        return $this->json([
+            'message' => "appointment updated successfully",
+                "Appointment" => [
+                    "id" => $appointment->getId(),
+                    'status' => $appointment->getStatus(),
+                ]
+        ]);
+    }
+
+
+
 }
