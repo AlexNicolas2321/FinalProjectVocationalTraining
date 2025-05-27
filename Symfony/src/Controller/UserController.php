@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Doctor;
+use App\Entity\Patient;
 use App\Entity\Receptionist;
+use App\Entity\Role;
 use App\Entity\UserRole;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
@@ -31,6 +33,28 @@ class UserController extends AbstractController
         $users = $userRepository->getAllUsers();
         return new JsonResponse($users);
     }
+
+    
+    #[Route('api/getAllPatients', name: 'get_all_patients', methods: ['GET'])]
+    public function getAllPatients(): JsonResponse
+    {
+        $data=[];
+        $users = $this->em->getRepository(User::class)->findAll();
+        foreach ($users as $user) {
+            if($user->getPatient()){
+               $patient=$user->getPatient(); 
+                $data[]=[
+                    "dni" =>$user->getDni(),
+                    "first_name" => $patient->getFirstName(),
+                    "last_name" => $patient->getLastName(),
+                    "phone" => $patient->getPhone(),
+                    "birth_date" => $patient->getBirthDate(),
+                ];
+            }
+        }
+        return new JsonResponse($data);
+    }
+
 
     #[Route('/api/admin', name: 'create_admin', methods: ['POST'])]
     public function createAdmin(Request $request): JsonResponse
@@ -124,23 +148,44 @@ class UserController extends AbstractController
 
         return $this->json(['message' => 'Usuario creado correctamente', 'id' => $user->getId()], 201);
     }
-
-
-   /* #[Route('/api/roles/{id}', name: 'test_user_roles', methods: ['GET'])]
-    public function testUserRoles(int $id): JsonResponse
-    {
-        $user = $this->em->getRepository(User::class)->find($id);
-
+    #[Route('/api/editRoleUser', name: 'edit_role_user', methods: ['PATCH'])]
+    public function editRoleUser(
+        Request $request,
+        UserRepository $userRepository,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+    
+        $user = $userRepository->find($data["id"]);
         if (!$user) {
-            return new JsonResponse(['error' => "User with ID $id not found"], 404);
+            return new JsonResponse(["message" => "Usuario no encontrado"], 404);
         }
-
-        // Usamos el método getRoles() que devuelve los roles
-        $roles = $user->getRoles();
-
+    
+        // Eliminar los antiguos UserRole de la BBDD
+        foreach ($user->getUserRoles() as $userRole) {
+            $em->remove($userRole);
+        }
+        
+        
+    
+        
+        foreach ($data["role"] as $roleName) {
+            $role = $em->getRepository(Role::class)->findOneBy(["name" => $roleName]);
+            if ($role) {
+                $userRole = new UserRole();
+                $userRole->setRole($role);
+                $userRole->setUser($user);
+                $em->persist($userRole); 
+                $user->addUserRole($userRole);
+            }
+        }
+    
+        $em->flush();
+    
         return new JsonResponse([
-            'user_id' => $user->getId(),
-            'roles' => $roles,
+            "message" => "Actualizado con éxito",
+            "roles" => $user->getRoles()
         ]);
-    }*/
+    }
+        
 }

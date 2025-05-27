@@ -2,9 +2,14 @@
 // src/Controller/RolesController.php
 namespace App\Controller;
 
+use App\Entity\Role;
 use App\Repository\RoleRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RoleController extends AbstractController
@@ -25,4 +30,22 @@ class RoleController extends AbstractController
 
         return $this->json($data);
     }
+    
+    #[Route('/api/createRole', name: 'create_roles', methods: ['POST'])]
+    public function createRole(EntityManagerInterface $em,Request $request): JsonResponse{
+        $data = json_decode($request->getContent(), true);
+
+        $role = new Role();
+        $role->setName($data["name"]);
+
+        $em->persist($role);
+        $em->flush($role);
+
+        return new JsonResponse([
+            'message' => 'creado nuevo rol'
+        ]);
+        
+
+    
+}
 }
