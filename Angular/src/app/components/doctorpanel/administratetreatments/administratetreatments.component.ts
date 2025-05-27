@@ -2,18 +2,20 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TreatmentService } from '../../../services/treatment.service';
-import { Treatment } from '../../../models/treatment';
-import { DoctorService } from '../../../services/doctor.service';
 import { Doctor } from '../../../models/doctor';
+import { DoctorService } from '../../../services/doctor.service';
+import { Treatment } from '../../../models/treatment';
+
 
 @Component({
-  selector: 'app-createtreatment',
+  selector: 'app-administratetreatments',
   imports: [CommonModule,FormsModule],
-  templateUrl: './createtreatment.component.html',
-  styleUrl: './createtreatment.component.css'
+  templateUrl: './administratetreatments.component.html',
+  styleUrl: './administratetreatments.component.css'
 })
-export class CreatetreatmentComponent {
+export class AdministratetreatmentsComponent {
 
+  
   doctors: Doctor[]=[];
   selectedDoctorId: number | null = null;
  
@@ -69,4 +71,5 @@ ngOnInit(){
       
     })
   }
+
 }

@@ -1,0 +1,107 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Treatment List</h2>
+  
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Doctor ID</th>
+          <th>Doctor First Name</th>
+          <th>Doctor Last Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí se iteraría sobre treatments, por ejemplo con Angular *ngFor -->
+        <tr *ngFor="let treatment of treatments">
+          <td>{{ treatment.id }}</td>
+          <td>{{ treatment.name }}</td>
+          <td>{{ treatment.description }}</td>
+          <td>{{ treatment.price | currency }}</td>
+          <td>{{ treatment.doctorId }}</td>
+          <td>{{ treatment.doctor_first_name }}</td>
+          <td>{{ treatment.doctor_last_name }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="treatments.length === 0" class="alert alert-warning">
+      No treatments found.
+    </div>
+  </div>
+  
+  
+  
+  <div class="container mt-5">
+      <h2 class="mb-4">Crear nuevo tratamiento</h2>
+      
+      <form (ngSubmit)="createTreatment()" #treatmentForm="ngForm">
+        
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre del tratamiento</label>
+          <input 
+            type="text" 
+            id="name" 
+            class="form-control" 
+            name="name" 
+            [(ngModel)]="newTreatment.name" 
+            required>
+        </div>
+    
+        <!-- Descripción -->
+        <div class="mb-3">
+          <label for="description" class="form-label">Descripción</label>
+          <textarea 
+            id="description" 
+            class="form-control" 
+            name="description" 
+            [(ngModel)]="newTreatment.description" 
+            rows="3"
+            required></textarea>
+        </div>
+    
+        <!-- Precio -->
+        <div class="mb-3">
+          <label for="price" class="form-label">Precio (€)</label>
+          <input 
+            type="number" 
+            id="price" 
+            class="form-control" 
+            name="price" 
+            [(ngModel)]="newTreatment.price" 
+            required 
+            min="0" 
+            step="0.01">
+        </div>
+  
+        <div class="form-group">
+          <label for="doctor">Select a Doctor:</label>
+          <select
+            class="form-control"
+            id="doctor"
+            [(ngModel)]="selectedDoctorId"
+            name="doctor"
+            required
+          >
+            <option [ngValue]="null" disabled selected>Select a doctor</option>
+            <option *ngFor="let doctor of doctors" [ngValue]="doctor.id">
+            - NOMBRE: {{ doctor.firstName }} - APELLIDO: {{ doctor.lastName }} - DNI: {{ doctor.dni }} - ESPECIALIDAD: {{doctor.speciality}}
+            </option>
+          </select>
+        </div>
+        
+        
+        <!-- Botón -->
+        <button 
+          type="submit" 
+          class="btn btn-success" 
+          [disabled]="!treatmentForm.valid">
+          Crear tratamiento
+        </button>
+    
+      </form>
+    </div>
+    

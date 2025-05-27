@@ -54,12 +54,12 @@ class Appointment
         return $this;
     }
 
-    public function getObservations(): ?string
+    public function getObservation(): ?string
     {
         return $this->observations;
     }
 
-    public function setObservations(?string $observations): self
+    public function setObservation(?string $observations): self
     {
         $this->observations = $observations;
         return $this;

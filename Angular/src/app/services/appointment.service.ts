@@ -22,8 +22,11 @@ export class AppointmentService {
   getSpecificAppointments(id: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}getSpecificAppointments/${id}`);
   }
-  editAppointment(id:number,status:string) : Observable<any>{
-    return this.http.patch<any>(`${this.apiUrl}editeAppointment/${id}`, {status});
+  editeAppointmentStatus(id:number,status:string) : Observable<any>{
+    return this.http.patch<any>(`${this.apiUrl}editeAppointmentStatus/${id}`, {status});
+  }
+  editeAppointmentObservation(id:number,observation:string): Observable<any>{
+    return this.http.patch<any>(`${this.apiUrl}editeAppointmentObservation/${id}`,{observation});
   }
 
 }

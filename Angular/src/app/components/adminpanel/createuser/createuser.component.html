@@ -1,37 +1,3 @@
-<div class="container mt-5">
-  <h2 class="mb-4">Panel de Administración</h2>
-
-  <!-- Ver Usuarios -->
-  <div class="mb-3">
-    <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#usersList">
-      Ver Usuarios
-    </button>
-    <div class="collapse mt-2" id="usersList">
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let user of users">
-          (ID: {{ user.id }}) (USER_TYPE: {{ user.user_type }})  (DNI: {{ user.dni }}) (FIRST_NAME: {{ user.first_name }}) (LAST_NAME: {{ user.last_name }})
-          
-            (ROL: {{ user.roleNames }})
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- Ver Roles -->
-<div class="mb-3">
-  <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#rolesList" aria-expanded="false" aria-controls="rolesList">
-    Ver Roles
-  </button>
-  <div class="collapse mt-2" id="rolesList">
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let role of roles">
-        (ID: {{ role.id }}) - {{ role.name }}
-      </li>
-    </ul>
-  </div>
-</div>
-
 
 
 

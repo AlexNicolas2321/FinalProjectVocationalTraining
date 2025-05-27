@@ -14,7 +14,9 @@ export class UserService {
   getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl+"getAllUsers");
   }
-
+  getAllPatients(): Observable<any> {
+    return this.http.get<any>(this.apiUrl+"getAllPatients");
+  }
   getAllRoles(): Observable<any> {
     return this.http.get<any>(this.apiUrl+"getAllRoles");
   }
@@ -25,5 +27,13 @@ export class UserService {
 
   createUserWithDetails(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}notAdmin`, userData);
+  }
+
+  createRole(name:string): Observable<any>{
+    return this.http.post(`${this.apiUrl}createRole`,{name});
+  }
+
+  editeRoleUsers(id:number,role:string[]) : Observable<any>{
+    return this.http.patch(`${this.apiUrl}editRoleUser`,{id,role})
   }
 }

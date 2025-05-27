@@ -1,0 +1,46 @@
+<!-- Ver Roles -->
+<div class="mb-3">
+    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#rolesList" aria-expanded="false" aria-controls="rolesList">
+      Ver Roles
+    </button>
+    <div class="collapse mt-2" id="rolesList">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let role of roles">
+          (ID: {{ role.id }}) - {{ role.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="container mt-4">
+    <h2>Create a New Role</h2>
+    <form (ngSubmit)="createRole()" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="roleName" class="form-label">Role Name</label>
+        <input
+          type="text"
+          id="roleName"
+          class="form-control"
+          name="name"
+          [(ngModel)]="name"
+          required
+        />
+        <div class="invalid-feedback">
+          Please enter a role name.
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Create Role</button>
+    </form>
+  </div>
+  
+
+  <div *ngIf="message" class="mt-2">
+    <div
+      [ngClass]="{
+        'alert alert-success': messageType === 'success',
+        'alert alert-danger': messageType === 'error'
+      }"
+    >
+      {{ message }}
+    </div>
+  </div>

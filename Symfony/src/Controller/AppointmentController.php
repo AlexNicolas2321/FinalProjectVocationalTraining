@@ -30,7 +30,7 @@ class AppointmentController extends AbstractController
 
         $appointment = new Appointment();
         $appointment->setDate(new \DateTime($data['date']));
-        $appointment->setObservations($data['observations'] ?? null);
+        $appointment->setObservation($data['observations'] ?? null);
         $appointment->setCreatedAt(new \DateTime('Europe/Madrid'));
         $appointment->setPatient($patient);
         $appointment->setDoctor($doctor);
@@ -56,7 +56,7 @@ class AppointmentController extends AbstractController
             $data[] = [
                 'id' => $appointment->getId(),
                 'date' => $appointment->getDate()->format('Y-m-d H:i:s'),
-                'observations' => $appointment->getObservations(),
+                'observations' => $appointment->getObservation(),
                 'state' => $appointment->getStatus(),
                 'doctor_first_name' => $doctor->getFirstName(),
                 'doctor_last_name' => $doctor->getLastName(),
@@ -92,7 +92,7 @@ class AppointmentController extends AbstractController
 
             $data[] = [
                 'date' => $appointment->getDate()->format('Y-m-d H:i:s'),
-                'observations' => $appointment->getObservations(),
+                'observations' => $appointment->getObservation(),
                 'first_name' => $doctor->getFirstName(),
                 'last_name' => $doctor->getLastName(),
                 'treatment' => $treatment->getName(),
@@ -104,7 +104,7 @@ class AppointmentController extends AbstractController
         return new JsonResponse($data, 200);
     }
 
-    #[Route('/api/editeAppointment/{id}', name: 'edit_appointments', methods: ['PATCH'])]
+    #[Route('/api/editeAppointmentStatus/{id}', name: 'edit_appointments_status', methods: ['PATCH'])]
     public function editeAppointment(int $id,EntityManagerInterface $em,Request $request): JsonResponse
     {
         $appointment = $em->getRepository(Appointment::class)->find($id);
@@ -124,6 +124,25 @@ class AppointmentController extends AbstractController
                 ]
         ]);
     }
+
+    #[Route('/api/editeAppointmentObservation/{id}', name: 'edit_appointments_observation', methods: ['PATCH'])]
+    public function editeAppointmentObservation(int $id,EntityManagerInterface $em,Request $request): JsonResponse{
+
+        $data=json_decode($request->getContent(),true);
+        
+        $appointment = $em->getRepository(Appointment::class)->find($id);
+
+        $appointment->setObservation($data["observation"]);
+
+        $em->flush();
+
+        return new JsonResponse([
+            "message" => "updated observation",
+            "observation" => $appointment->getObservation(),
+        ]);
+    }
+
+
 
 
 

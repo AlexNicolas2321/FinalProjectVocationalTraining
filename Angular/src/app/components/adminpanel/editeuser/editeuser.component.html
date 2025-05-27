@@ -1,0 +1,56 @@
+<div class="container mt-5">
+  <h2 class="mb-4">Panel de Administración</h2>
+
+  <!-- Ver Usuarios -->
+  <div class="mb-3">
+    <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#usersList">
+      Ver Usuarios
+    </button>
+    <div class="collapse mt-2" id="usersList">
+      <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let user of users">
+          <span>
+            (ID: {{ user.id }}) (USER_TYPE: {{ user.user_type }}) (DNI: {{ user.dni }}) (FIRST_NAME: {{ user.first_name }}) (LAST_NAME: {{ user.last_name }})
+            (ROL: {{ user.roleNames }})
+          </span>
+          <button class="btn btn-primary btn-sm" (click)="openEditRolesModal(user)">
+            Editar Rol
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal para editar roles -->
+<div class="modal fade" id="editRolesModal" tabindex="-1" aria-labelledby="editRolesModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editRolesModalLabel">Editar Roles del Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let role of allRoles">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [value]="role.name"
+              [(ngModel)]="role.selected"
+            />
+            <label class="form-check-label">
+              {{ role.name }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="submitEditRoles()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>

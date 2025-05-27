@@ -13,7 +13,7 @@ export class ShowusersComponent implements OnInit {
   users:User[]=[];
   constructor(private userService:UserService){}
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe({
+    this.userService.getAllPatients().subscribe({
       next: (data: any[]) => {
         this.users=data;
       },
