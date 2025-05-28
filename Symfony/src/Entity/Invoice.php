@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\InvoiceRepository;
-use Doctrine\DBAL\Types\BlobType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -132,12 +131,16 @@ class Invoice
 
     public function getPdfFile(): ?string
     {
+        if (is_resource($this->pdfFile)) {
+            return stream_get_contents($this->pdfFile);
+        }
         return $this->pdfFile;
     }
-
+    
     public function setPdfFile(?string $pdfFile): self
     {
         $this->pdfFile = $pdfFile;
         return $this;
     }
+   
 }

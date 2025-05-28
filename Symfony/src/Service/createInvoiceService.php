@@ -19,70 +19,135 @@
         }
     
         public function createInvoiceForAppointment(Appointment $appointment): Invoice
-        {
-            $doctor = $appointment->getDoctor();
-            $patient = $appointment->getPatient();
-            $treatment = $doctor->getTreatment();
-    
-            
-            $invoice = new Invoice();
-            $invoice->setAppointment($appointment);
-            $invoice->setIssuedAt(new \DateTimeImmutable());
-            $invoice->setBaseAmount($treatment->getPrice());
-            $invoice->setTaxRate(21); // 21% VAT
-            $invoice->setStatus("confirmed");
-    
-            // Calculate the amounts
-            $basePrice = $invoice->getBaseAmount();
-            $taxAmount = $basePrice * ($invoice->getTaxRate() / 100);
-            $totalAmount = $basePrice + $taxAmount;
-    
-            $invoice->setTaxAmount($taxAmount);
-            $invoice->setTotalAmount($totalAmount);
-    
-            
-            $this->entityManager->persist($invoice);
-            $this->entityManager->flush();
-    
-            $patientName = $patient->getFirstName() . ' ' . $patient->getLastName();
-            
-            // 5️⃣ Update with the PDF path
-            $this->entityManager->flush();
+{
+    $doctor = $appointment->getDoctor();
+    $patient = $appointment->getPatient();
+    $treatment = $doctor->getTreatment();
 
-            $pdfBinaryContent = $this->generatePdf($invoice, $patientName);
-            $invoice->setPdfFile($pdfBinaryContent);
+    $invoice = new Invoice();
+    $invoice->setAppointment($appointment);
+    $invoice->setIssuedAt(new \DateTimeImmutable());
+    $invoice->setBaseAmount($treatment->getPrice());
+    $invoice->setTaxRate(21); // 21% VAT
+    $invoice->setStatus("confirmed");
 
-            return $invoice;
-        }
-    
+    // Calculate the amounts
+    $basePrice = $invoice->getBaseAmount();
+    $taxAmount = $basePrice * ($invoice->getTaxRate() / 100);
+    $totalAmount = $basePrice + $taxAmount;
+
+    $invoice->setTaxAmount($taxAmount);
+    $invoice->setTotalAmount($totalAmount);
+
+    $this->entityManager->persist($invoice);
+    $this->entityManager->flush();
+
+    $patientName = $patient->getFirstName() . ' ' . $patient->getLastName();
+
+    $pdfBinaryContent = $this->generatePdf($invoice, $patientName);
+   // $invoice->setPdfFile($pdfBinaryContent);
+
+    $this->entityManager->flush(); 
+
+    return $invoice;
+}
+
         private function generatePdf(Invoice $invoice, string $patientName): string
-        {
-            // Configure Dompdf options
-            $options = new Options();
-            $options->set('defaultFont', 'Arial');
-            $dompdf = new Dompdf($options);
-    
-            
-            $html = '
-                <h1>Invoice #' . $invoice->getId() . '</h1>
-                <p>Patient: ' . $patientName . '</p>
-                <p>Base Price: €' . number_format($invoice->getBaseAmount(), 2) . '</p>
-                <p>Tax Rate: ' . $invoice->getTaxRate() . '%</p>
-                <p>Tax Amount: €' . number_format($invoice->getTaxAmount(), 2) . '</p>
-                <p>Total: €' . number_format($invoice->getTotalAmount(), 2) . '</p>
-                <p>Date: ' . $invoice->getIssuedAt()->format('Y-m-d') . '</p>
-            ';
-    
-            
-            $dompdf->loadHtml($html);
-            $dompdf->setPaper('A4', 'portrait');
-            $dompdf->render();
-    
-           // Obtiene el contenido del PDF como binario
-            $pdfBinaryContent = $dompdf->output();
+{
+    $options = new Options();
+    $options->set('defaultFont', 'Arial');
+    $dompdf = new Dompdf($options);
 
-            return $pdfBinaryContent; // Path to access from the web
-        }
+    $html = '
+    <html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                color: #333;
+                margin: 30px;
+            }
+            h1 {
+                text-align: center;
+                color: #2E86C1;
+                margin-bottom: 40px;
+            }
+            .invoice-header {
+                margin-bottom: 30px;
+            }
+            .invoice-header p {
+                margin: 4px 0;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 30px;
+            }
+            th, td {
+                padding: 12px;
+                border: 1px solid #ddd;
+                text-align: right;
+            }
+            th {
+                background-color: #f2f2f2;
+                text-align: left;
+            }
+            .total-row th, .total-row td {
+                font-weight: bold;
+                border-top: 2px solid #000;
+            }
+            .footer {
+                text-align: center;
+                font-size: 12px;
+                color: #666;
+                margin-top: 40px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Factura Nº ' . htmlspecialchars($invoice->getId()) . '</h1>
+
+        <div class="invoice-header">
+            <p><strong>Paciente:</strong> ' . htmlspecialchars($patientName) . '</p>
+            <p><strong>Fecha:</strong> ' . $invoice->getIssuedAt()->format('d/m/Y') . '</p>
+        </div>
+
+        <table>
+            <tr>
+                <th>Concepto</th>
+                <th>Importe</th>
+            </tr>
+            <tr>
+                <td>Precio base</td>
+                <td>€ ' . number_format($invoice->getBaseAmount(), 2, ',', '.') . '</td>
+            </tr>
+            <tr>
+                <td>IVA (' . $invoice->getTaxRate() . '%)</td>
+                <td>€ ' . number_format($invoice->getTaxAmount(), 2, ',', '.') . '</td>
+            </tr>
+            <tr class="total-row">
+                <td>Total</td>
+                <td>€ ' . number_format($invoice->getTotalAmount(), 2, ',', '.') . '</td>
+            </tr>
+        </table>
+
+        <div class="footer">
+            Gracias por su confianza.
+        </div>
+    </body>
+    </html>
+    ';
+
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+
+    return $dompdf->output();
+}
+
+
+
     }
         
 

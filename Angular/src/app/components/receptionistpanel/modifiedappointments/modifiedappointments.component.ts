@@ -70,5 +70,24 @@ export class ModifiedappointmentsComponent {
       }
     });
   }
-    
+  
+  
+
+  downloadPdf(appointmentId: number) {
+    this.appointmentService.getAppointmentPdf(appointmentId).subscribe({
+      next: (blob) => {
+        const fileURL = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = fileURL;
+        a.download = `appointment_${appointmentId}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(fileURL);
+      },
+      error: (err) => {
+        console.error('Error al descargar PDF:', err);
+      }
+    });
+  }
+  
+
 }

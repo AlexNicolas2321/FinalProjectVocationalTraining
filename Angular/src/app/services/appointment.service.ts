@@ -29,4 +29,8 @@ export class AppointmentService {
     return this.http.patch<any>(`${this.apiUrl}editeAppointmentObservation/${id}`,{observation});
   }
 
+  getAppointmentPdf(id: number) {
+    return this.http.get(`${this.apiUrl}appointments/${id}/pdf`, { responseType: 'blob' });
+  }
+  
 }

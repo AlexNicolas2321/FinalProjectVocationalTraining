@@ -7,6 +7,7 @@ use App\Entity\Doctor;
 use App\Entity\Patient;
 use App\Entity\Treatment;
 use App\Entity\User;
+use App\Repository\AppointmentRepository;
 use App\Service\CreateInvoiceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\HttpFoundation\Response;
 
 class AppointmentController extends AbstractController
 {
@@ -154,7 +156,39 @@ class AppointmentController extends AbstractController
     }
 
 
+    #[Route('/api/appointments/{id}/pdf', name: 'appointment_pdf', methods: ['GET'])]
+public function downloadPdf(int $id, AppointmentRepository $appointmentRepository): Response
+{
+    $appointment = $appointmentRepository->find($id);
 
+    if (!$appointment) {
+        return new Response('Cita no encontrada', Response::HTTP_NOT_FOUND);
+    }
 
+    $invoice = $appointment->getInvoice();
 
+    $pdfContent = $invoice->getPdfFile();
+
+    if (is_null($pdfContent) || $pdfContent === '' || strlen($pdfContent) === 0) {
+        return new Response('PDF no disponible o vacío', Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    // Opcional: guardar el PDF en disco (puedes comentar esta parte si no quieres guardar)
+    $publicDir = $this->getParameter('kernel.project_dir') . '/public/pdfs';
+    if (!is_dir($publicDir)) {
+        mkdir($publicDir, 0777, true);
+    }
+    file_put_contents($publicDir . '/appointment_' . $id . '.pdf', $pdfContent);
+
+    // Devolver el PDF para descarga o visualización
+    $response = new Response($pdfContent);
+
+    // Para que el navegador intente mostrarlo
+    $response->headers->set('Content-Type', 'application/pdf');
+    $response->headers->set('Content-Disposition', 'inline; filename="appointment_' . $id . '.pdf"');
+
+    return $response;
 }
+}
+    
+

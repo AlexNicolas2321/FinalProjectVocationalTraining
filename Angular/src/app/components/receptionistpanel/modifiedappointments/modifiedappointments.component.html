@@ -29,9 +29,7 @@
           <td>{{ appointment.patient_phone || 'N/A' }}</td>
           <td>
             {{ appointment.state || 'N/A' }}
-            <button (click)="appointment.editing = !appointment.editing" class="btn btn-primary btn-sm ml-2">
-              Editar
-            </button>
+            <button (click)="appointment.editing = !appointment.editing" class="btn btn-primary btn-sm ml-2">Editar</button>
             <div *ngIf="appointment.editing">
               <select [(ngModel)]="appointment.newStatus" class="form-select form-select-sm mt-1">
                 <option value="pending">Pending</option>
@@ -40,12 +38,10 @@
               </select>
               <button (click)="updateStatus(appointment.id, appointment.newStatus)" class="btn btn-success btn-sm mt-1">Guardar</button>
             </div>
+          
+            <!-- Botón solo si está confirmado -->
+            <button *ngIf="appointment.state === 'confirmed'" (click)="downloadPdf(appointment.id)" class="btn btn-outline-secondary btn-sm mt-2">
+              Descargar PDF
+            </button>
           </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <div *ngIf="appointments.length === 0" class="alert alert-warning">
-      No appointments found.
-    </div>
-  </div>
+          
