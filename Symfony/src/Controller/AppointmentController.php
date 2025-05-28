@@ -7,6 +7,7 @@ use App\Entity\Doctor;
 use App\Entity\Patient;
 use App\Entity\Treatment;
 use App\Entity\User;
+use App\Service\CreateInvoiceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,9 @@ use Symfony\Component\Filesystem\Path;
 
 class AppointmentController extends AbstractController
 {
+
+    
+
     #[Route('/api/createAppointment', name: 'create_appointment', methods: ['POST'])]
     public function createAppointment(Request $request, EntityManagerInterface $em): JsonResponse
     {
@@ -105,7 +109,7 @@ class AppointmentController extends AbstractController
     }
 
     #[Route('/api/editeAppointmentStatus/{id}', name: 'edit_appointments_status', methods: ['PATCH'])]
-    public function editeAppointment(int $id,EntityManagerInterface $em,Request $request): JsonResponse
+    public function editeAppointment(int $id,EntityManagerInterface $em,Request $request,CreateInvoiceService $invoiceService): JsonResponse
     {
         $appointment = $em->getRepository(Appointment::class)->find($id);
 
@@ -114,7 +118,13 @@ class AppointmentController extends AbstractController
         if(isset($data["status"])){
             $appointment->setStatus($data["status"]);
         }
+        
+        if($data["status"]=="confirmed"){
+        $invoiceService->createInvoiceForAppointment($appointment);
+        }
+
         $em->flush();
+
 
         return $this->json([
             'message' => "appointment updated successfully",
@@ -134,6 +144,7 @@ class AppointmentController extends AbstractController
 
         $appointment->setObservation($data["observation"]);
 
+        
         $em->flush();
 
         return new JsonResponse([
