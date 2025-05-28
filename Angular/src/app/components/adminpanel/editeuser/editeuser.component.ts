@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Modal } from 'bootstrap';
 
 @Component({
   selector: 'app-createrole',
@@ -15,7 +14,9 @@ export class EditeUserRolesComponent implements OnInit {
   users: any[] = [];
   allRoles: any[] = []; 
   selectedUser: any = null;
-  editRolesModal: any;
+
+  // Control del modal sin Bootstrap JS
+  isModalOpen = false;
 
   constructor(private userService: UserService) {}
 
@@ -26,12 +27,8 @@ export class EditeUserRolesComponent implements OnInit {
 
   loadUsers() {
     this.userService.getAllUsers().subscribe({
-      next: res => {
-        this.users = res;
-      },
-      error: err => {
-        console.error('Error cargando usuarios', err);
-      }
+      next: res => this.users = res,
+      error: err => console.error('Error cargando usuarios', err)
     });
   }
 
@@ -40,9 +37,7 @@ export class EditeUserRolesComponent implements OnInit {
       next: res => {
         this.allRoles = res.map((r: any) => ({ name: r.name, selected: false }));
       },
-      error: err => {
-        console.error('Error cargando roles', err);
-      }
+      error: err => console.error('Error cargando roles', err)
     });
   }
 
@@ -51,31 +46,26 @@ export class EditeUserRolesComponent implements OnInit {
 
     // Marcar los roles que el usuario ya tiene
     this.allRoles.forEach(role => {
-     if(user.roleNames.includes(role.name)){
-      role.selected = true;
-     }
-      
+      role.selected = user.roleNames.includes(role.name);
     });
 
-    const modalElement = document.getElementById('editRolesModal');
-    this.editRolesModal = new Modal(modalElement!);
-    this.editRolesModal.show();
+    this.isModalOpen = true;  // Abrir modal
+  }
+
+  closeModal() {
+    this.isModalOpen = false;  // Cerrar modal
   }
 
   submitEditRoles() {
-    // Obtener los roles seleccionados
-    const selectedRoles = this.allRoles.filter(r => r.selected=true).map(r => r.name);
+    const selectedRoles = this.allRoles.filter(r => r.selected).map(r => r.name);
 
-    // Llamar a la función editeRoleUsers
     this.userService.editeRoleUsers(this.selectedUser.id, selectedRoles).subscribe({
       next: res => {
         console.log('Roles actualizados', res);
-        this.editRolesModal.hide();
+        this.closeModal();
         this.loadUsers(); // refrescar lista de usuarios
       },
-      error: err => {
-        console.error('Error al actualizar roles', err);
-      }
+      error: err => console.error('Error al actualizar roles', err)
     });
   }
 }

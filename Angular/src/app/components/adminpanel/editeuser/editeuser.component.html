@@ -23,34 +23,45 @@
 </div>
 
 
-
-<!-- Modal para editar roles -->
-<div class="modal fade" id="editRolesModal" tabindex="-1" aria-labelledby="editRolesModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<!-- Modal controlado con Angular -->
+<div 
+  class="modal fade" 
+  [class.show]="isModalOpen" 
+  [style.display]="isModalOpen ? 'block' : 'none'" 
+  tabindex="-1" 
+  role="dialog" 
+  aria-modal="true"
+  [attr.aria-hidden]="!isModalOpen"
+>
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
+
       <div class="modal-header">
-        <h5 class="modal-title" id="editRolesModalLabel">Editar Roles del Usuario</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <h5 class="modal-title">Editar Roles de Usuario</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
       </div>
+
       <div class="modal-body">
-        <div *ngFor="let role of allRoles">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              [value]="role.name"
-              [(ngModel)]="role.selected"
-            />
-            <label class="form-check-label">
+        <form>
+          <div *ngFor="let role of allRoles" class="form-check">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              [id]="role.name" 
+              [(ngModel)]="role.selected" 
+              name="role_{{role.name}}"
+            >
+            <label class="form-check-label" [for]="role.name">
               {{ role.name }}
             </label>
           </div>
-        </div>
+        </form>
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-success" (click)="submitEditRoles()">Guardar Cambios</button>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="submitEditRoles()">Guardar cambios</button>
       </div>
+
     </div>
   </div>
-</div>
