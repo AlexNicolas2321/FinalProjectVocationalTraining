@@ -8,7 +8,7 @@ use App\Entity\Patient;
 use App\Entity\Treatment;
 use App\Entity\User;
 use App\Repository\AppointmentRepository;
-use App\Service\CreateInvoiceService;
+use App\Service\createInvoiceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,9 +19,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AppointmentController extends AbstractController
 {
+    private createInvoiceService $invoiceService;
 
     
+    public function __construct(createInvoiceService $invoiceService)
+    {
+        $this->invoiceService = $invoiceService;
 
+    }
     #[Route('/api/createAppointment', name: 'create_appointment', methods: ['POST'])]
     public function createAppointment(Request $request, EntityManagerInterface $em): JsonResponse
     {
@@ -111,7 +116,7 @@ class AppointmentController extends AbstractController
     }
 
     #[Route('/api/editeAppointmentStatus/{id}', name: 'edit_appointments_status', methods: ['PATCH'])]
-    public function editeAppointment(int $id,EntityManagerInterface $em,Request $request,CreateInvoiceService $invoiceService): JsonResponse
+    public function editeAppointment(int $id,EntityManagerInterface $em,Request $request): JsonResponse
     {
         $appointment = $em->getRepository(Appointment::class)->find($id);
 
@@ -122,7 +127,7 @@ class AppointmentController extends AbstractController
         }
         
         if($data["status"]=="confirmed"){
-        $invoiceService->createInvoiceForAppointment($appointment);
+        $this->invoiceService->createInvoiceForAppointment($appointment);
         }
 
         $em->flush();
@@ -137,25 +142,49 @@ class AppointmentController extends AbstractController
         ]);
     }
 
-    #[Route('/api/editeAppointmentObservation/{id}', name: 'edit_appointments_observation', methods: ['PATCH'])]
-    public function editeAppointmentObservation(int $id,EntityManagerInterface $em,Request $request): JsonResponse{
-
-        $data=json_decode($request->getContent(),true);
-        
+    #[Route('/api/editAppointmentStatus/{id}', name: 'edit_appointment_status', methods: ['PATCH'])]
+    public function editAppointmentStatus(int $id, EntityManagerInterface $em, Request $request): JsonResponse
+    {
+        // Obtener la cita
         $appointment = $em->getRepository(Appointment::class)->find($id);
-
-        $appointment->setObservation($data["observation"]);
-
-        
-        $em->flush();
-
-        return new JsonResponse([
-            "message" => "updated observation",
-            "observation" => $appointment->getObservation(),
-        ]);
+    
+        // Validar existencia
+        if (!$appointment) {
+            return $this->json([
+                'error' => 'Appointment not found.'
+            ], 404);
+        }
+    
+        // Decodificar datos
+        $data = json_decode($request->getContent(), true);
+    
+        // Validar y actualizar estado
+        if (isset($data['status'])) {
+            $appointment->setStatus($data['status']);
+    
+            // Si está confirmado, crear factura
+            if ($data['status'] === 'confirmed') {
+                $this->invoiceService->createInvoiceForAppointment($appointment);
+            }
+    
+            // Guardar cambios
+            $em->flush();
+    
+            return $this->json([
+                'message' => 'Appointment status updated successfully.',
+                'appointment' => [
+                    'id' => $appointment->getId(),
+                    'status' => $appointment->getStatus(),
+                ]
+            ]);
+        }
+    
+        // Si no se envió "status"
+        return $this->json([
+            'error' => 'Status not provided.'
+        ], 400);
     }
-
-
+    
     #[Route('/api/appointments/{id}/pdf', name: 'appointment_pdf', methods: ['GET'])]
 public function downloadPdf(int $id, AppointmentRepository $appointmentRepository): Response
 {

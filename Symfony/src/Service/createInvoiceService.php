@@ -9,7 +9,7 @@
     use Dompdf\Options;
 
     
-    class CreateInvoiceService
+    class createInvoiceService
     {
         private EntityManagerInterface $entityManager;
     
@@ -43,16 +43,21 @@
     $this->entityManager->flush();
 
     $patientName = $patient->getFirstName() . ' ' . $patient->getLastName();
+    $doctorName = $doctor->getFirstName() . ' ' . $patient->getLastName();
+    $treatmentName = $doctor->getTreatment()->getName();
 
-    $pdfBinaryContent = $this->generatePdf($invoice, $patientName);
-   // $invoice->setPdfFile($pdfBinaryContent);
+    $pdfBinaryContent = $this->generatePdf($invoice, $patientName,$doctorName,$treatmentName);
+    $invoice->setPdfFile($pdfBinaryContent);
 
     $this->entityManager->flush(); 
 
     return $invoice;
 }
 
-        private function generatePdf(Invoice $invoice, string $patientName): string
+
+
+
+private function generatePdf(Invoice $invoice, string $patientName, string $doctorName, string $treatmentName): string
 {
     $options = new Options();
     $options->set('defaultFont', 'Arial');
@@ -106,10 +111,12 @@
         </style>
     </head>
     <body>
-        <h1>Factura Nº ' . htmlspecialchars($invoice->getId()) . '</h1>
+        <h1>Factura</h1>
 
         <div class="invoice-header">
             <p><strong>Paciente:</strong> ' . htmlspecialchars($patientName) . '</p>
+            <p><strong>Médico:</strong> ' . htmlspecialchars($doctorName) . '</p>
+            <p><strong>Tratamiento:</strong> ' . htmlspecialchars($treatmentName) . '</p>
             <p><strong>Fecha:</strong> ' . $invoice->getIssuedAt()->format('d/m/Y') . '</p>
         </div>
 
