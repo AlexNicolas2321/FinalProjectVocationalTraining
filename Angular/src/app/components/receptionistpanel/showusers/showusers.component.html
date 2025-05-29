@@ -1,20 +1,18 @@
 <div class="container mt-5">
-    <h2 class="mb-4">Panel de Administración</h2>
-  
-    <!-- Ver Usuarios -->
-    <div class="mb-3">
-      <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#usersList">
-        Ver Pacientes
-      </button>
-      <div class="collapse mt-2" id="usersList">
-        <ul class="list-group">
-          <li class="list-group-item" *ngFor="let user of users">
-           (DNI: {{ user.dni }}) (FIRST_NAME: {{ user.first_name }}) (LAST_NAME: {{ user.last_name }})
-            
-          </li>
-        </ul>
-      </div>
+  <h2 class="mb-4">Ver Pacientes</h2>
+
+  <!-- Ver Pacientes -->
+  <div class="mb-3">
+
+      <ul class="list-group list-group-flush">
+        <li
+          class="list-group-item"
+          *ngFor="let user of users"
+        >
+          <span class="fw-bold">DNI:</span> {{ user.dni }},
+          <span class="fw-bold">Nombre:</span> {{ user.first_name }},
+          <span class="fw-bold">Apellido:</span> {{ user.last_name }}
+        </li>
+      </ul>
     </div>
   </div>
-  
-  

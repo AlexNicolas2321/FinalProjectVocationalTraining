@@ -20,14 +20,18 @@ import { AppointmentsviewComponent } from './components/doctorpanel/appointments
 
 export const routes: Routes = [
     {path:"admin" ,component:AdminComponent,children:[
-        { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
+        {path: '', redirectTo: 'create_user', pathMatch: 'full' },
         {path:"create_user" , component:CreateUserComponent},
         {path:"create_role",component:CreateroleComponent},
-        {path: "edite_user_roles", component:EditeUserRolesComponent}
+        {path: "edite_user_roles", component:EditeUserRolesComponent},
+        {path:"sign_up" , component:SignupComponent},
+        {path:"sign_in" , component:SigninComponent},
+        
+        
         ]}
     ,
      {path:"patient" ,component:PatientComponent,children:[
-        { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
+        { path: '', redirectTo: 'home', pathMatch: 'full' },
         {path:"sign_up" , component:SignupComponent},
         {path:"sign_in" , component:SigninComponent},
         {path:"home" , component:HomeComponent},
@@ -35,13 +39,13 @@ export const routes: Routes = [
 
     ]},
     {path:'receptionist' ,component:ReceptionistComponent,children:[
-        { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
+        { path: '', redirectTo: 'show_appointments', pathMatch: 'full' },
         {path: 'show_users' , component:ShowusersComponent},
         {path: "show_appointments",component:ModifiedappointmentsComponent},
         
     ]},
     {path:'doctor' ,component:DoctorComponent,children:[
-        { path: '', redirectTo: 'sign_in', pathMatch: 'full' },
+        { path: '', redirectTo: 'show_patients', pathMatch: 'full' },
         {path: 'show_patients' , component:ShowusersComponent},
         {path: 'administrate_treatments' , component:AdministratetreatmentsComponent},
         {path: 'view_appointments' , component:AppointmentsviewComponent},

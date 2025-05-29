@@ -1,75 +1,95 @@
-
-
-
-
-
-
 <div class="container mt-5">
   <h2>Crear Usuario</h2>
 
-  <form (ngSubmit)="createUser()" #userForm="ngForm">
-
+  <form (ngSubmit)="createUser(userForm)" #userForm="ngForm" novalidate>
     <!-- Tipo de usuario -->
     <div class="mb-3">
       <label for="user_type" class="form-label">Tipo de Usuario</label>
       <select class="form-select" id="user_type" [(ngModel)]="created_user.user_type" name="user_type" required>
+        <option value="" disabled selected>Selecciona un tipo</option>
         <option value="admin">Administrador</option>
         <option value="receptionist">Recepcionista</option>
         <option value="doctor">Doctor</option>
       </select>
+      <div class="invalid-feedback" *ngIf="userForm.submitted && !created_user.user_type">
+        Selecciona un tipo de usuario.
+      </div>
     </div>
 
     <!-- DNI -->
     <div class="mb-3">
       <label for="dni" class="form-label">DNI</label>
       <input type="text" class="form-control" id="dni" required [(ngModel)]="created_user.dni" name="dni">
+      <div class="invalid-feedback" *ngIf="userForm.submitted && !created_user.dni">
+        El DNI es obligatorio.
+      </div>
     </div>
 
     <!-- Contraseña -->
     <div class="mb-3">
       <label for="password" class="form-label">Contraseña</label>
-      <input type="password" class="form-control" id="password" [(ngModel)]="created_user.password" name="password">
+      <input type="password" class="form-control" id="password" required [(ngModel)]="created_user.password" name="password">
+      <div class="invalid-feedback" *ngIf="userForm.submitted && !created_user.password">
+        La contraseña es obligatoria.
+      </div>
     </div>
 
     <!-- Campos visibles solo si NO es admin -->
-    <ng-container *ngIf="created_user.user_type !== 'admin'">
+    <ng-container *ngIf="created_user.user_type !== 'admin' && created_user.user_type">
       <div class="mb-3">
         <label for="first_name" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="first_name" [(ngModel)]="created_user.first_name" name="first_name">
+        <input type="text" class="form-control" id="first_name" required [(ngModel)]="created_user.first_name" name="first_name">
+        <div class="invalid-feedback" *ngIf="userForm.submitted && !created_user.first_name">
+          El nombre es obligatorio.
+        </div>
       </div>
 
       <div class="mb-3">
         <label for="last_name" class="form-label">Apellido</label>
-        <input type="text" class="form-control" id="last_name" [(ngModel)]="created_user.last_name" name="last_name">
+        <input type="text" class="form-control" id="last_name" required [(ngModel)]="created_user.last_name" name="last_name">
+        <div class="invalid-feedback" *ngIf="userForm.submitted && !created_user.last_name">
+          El apellido es obligatorio.
+        </div>
       </div>
 
       <div class="mb-3">
         <label for="phone" class="form-label">Teléfono</label>
-        <input type="tel" class="form-control" id="phone" [(ngModel)]="created_user.phone" name="phone">
+        <input type="tel" class="form-control" id="phone" required [(ngModel)]="created_user.phone" name="phone">
+        <div class="invalid-feedback" *ngIf="userForm.submitted && !created_user.phone">
+          El teléfono es obligatorio.
+        </div>
       </div>
     </ng-container>
 
     <!-- Campo especialidad, solo si es doctor -->
     <div class="mb-3" *ngIf="created_user.user_type === 'doctor'">
       <label for="speciality" class="form-label">Especialidad</label>
-      <input type="text" class="form-control" id="speciality" [(ngModel)]="created_user.speciality" name="speciality">
+      <input type="text" class="form-control" id="speciality" required [(ngModel)]="created_user.speciality" name="speciality">
+      <div class="invalid-feedback" *ngIf="userForm.submitted && !created_user.speciality">
+        La especialidad es obligatoria.
+      </div>
     </div>
 
     <!-- Roles -->
     <div *ngIf="roles?.length">
-      <div *ngFor="let role of roles">
+      <label class="form-label">Roles</label>
+      <div class="form-check" *ngFor="let role of roles">
         <input
           type="checkbox"
+          class="form-check-input"
           [value]="role.id"
           (change)="onRoleChange($event)"
           [checked]="created_user.roleIds?.includes(role.id)"
+          id="role-{{ role.id }}"
         />
-        <label>{{ role.name }}</label>
+        <label class="form-check-label" [for]="'role-' + role.id">{{ role.name }}</label>
       </div>
     </div>
 
- 
-
-    <button type="submit" class="btn btn-primary">Crear Usuario</button>
+    <!-- Botones -->
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary">Crear Usuario</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="resetForm(userForm)">Cancelar</button>
+    </div>
   </form>
 </div>

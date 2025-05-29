@@ -115,7 +115,7 @@ private function generatePdf(Invoice $invoice, string $patientName, string $doct
 
         <div class="invoice-header">
             <p><strong>Paciente:</strong> ' . htmlspecialchars($patientName) . '</p>
-            <p><strong>Médico:</strong> ' . htmlspecialchars($doctorName) . '</p>
+            <p><strong>Facultativo:</strong> ' . htmlspecialchars($doctorName) . '</p>
             <p><strong>Tratamiento:</strong> ' . htmlspecialchars($treatmentName) . '</p>
             <p><strong>Fecha:</strong> ' . $invoice->getIssuedAt()->format('d/m/Y') . '</p>
         </div>

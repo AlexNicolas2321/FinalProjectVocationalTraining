@@ -48,10 +48,7 @@ export class AppointmentsviewComponent {
     });
   }
 
-  editAppointment(appointment: AppointmentData) {
-    // Creamos una copia para evitar modificar la lista directamente hasta guardar
-    this.editingAppointment = { ...appointment };
-  }
+ 
 
   saveObservation() {
     if (this.editingAppointment) {

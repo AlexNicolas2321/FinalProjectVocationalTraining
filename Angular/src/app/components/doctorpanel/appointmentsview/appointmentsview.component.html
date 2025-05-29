@@ -14,7 +14,6 @@
         <th>Apellido del paciente</th>
         <th>Teléfono del paciente</th>
         <th>Estado de la cita</th>
-        <th>Editar observación</th>
       </tr>
     </thead>
     <tbody>
@@ -29,11 +28,7 @@
         <td>{{ appointment.patient_last_name || 'N/A' }}</td>
         <td>{{ appointment.patient_phone || 'N/A' }}</td>
         <td>{{ appointment.state || 'N/A' }}</td>
-        <td>
-          <button (click)="editAppointment(appointment)" class="btn btn-primary btn-sm ml-2">
-            Editar
-          </button>
-        </td>
+       
       </tr>
     </tbody>
   </table>
@@ -41,19 +36,3 @@
   <div *ngIf="appointments.length === 0" class="alert alert-warning">
     No appointments found.
   </div>
-
-  <!-- PANEL DE EDICIÓN DE OBSERVACIÓN -->
-  <div *ngIf="editingAppointment" class="mt-4 card p-3">
-    <h5>Edit Observation for Appointment ID: {{ editingAppointment.id }}</h5>
-    <textarea
-      [(ngModel)]="editingAppointment.observations"
-      rows="4"
-      placeholder="Editar observación"
-      class="form-control"
-    ></textarea>
-    <div class="mt-2">
-      <button (click)="saveObservation()" class="btn btn-success btn-sm">Guardar</button>
-      <button (click)="cancelEdit()" class="btn btn-secondary btn-sm ml-2">Cancelar</button>
-    </div>
-  </div>
-</div>
