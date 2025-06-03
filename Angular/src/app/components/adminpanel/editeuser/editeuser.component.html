@@ -1,26 +1,28 @@
+<!-- EDITAR ROLES DE USUARIOS -->
 <div class="container mt-5">
-  <h2 class="mb-4">Editar Roles de Usuarios</h2>
+  <div class="card shadow-sm rounded-4 col-md-10 col-lg-8 mx-auto">
+    <div class="card-header bg-dark text-white rounded-top-4 d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Editar Roles de Usuarios</h5>
+      <button class="btn btn-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#usersList">
+        Ver Usuarios
+      </button>
+    </div>
 
-  <!-- Ver Usuarios -->
-  <div class="mb-3">
-    <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#usersList">
-      Ver Usuarios
-    </button>
-    <div class="collapse mt-3" id="usersList">
+    <div class="collapse" id="usersList">
       <ul class="list-group list-group-flush">
         <li
-          class="list-group-item d-flex justify-content-between align-items-center"
+          class="list-group-item d-flex justify-content-between align-items-start flex-column flex-md-row gap-2"
           *ngFor="let user of users"
         >
-          <div>
-            <span class="fw-bold">ID:</span> {{ user.id }},
-            <span class="fw-bold">Tipo:</span> {{ user.user_type }},
-            <span class="fw-bold">DNI:</span> {{ user.dni }},
-            <span class="fw-bold">Nombre:</span> {{ user.first_name }},
-            <span class="fw-bold">Apellido:</span> {{ user.last_name }},
-            <span class="fw-bold">Roles:</span> {{ user.roleNames }}
+          <div class="text-break small">
+            <strong>ID:</strong> {{ user.id }},
+            <strong>Tipo:</strong> {{ user.user_type }},
+            <strong>DNI:</strong> {{ user.dni }},
+            <strong>Nombre:</strong> {{ user.first_name }},
+            <strong>Apellido:</strong> {{ user.last_name }},
+            <strong>Roles:</strong> {{ user.roleNames }}
           </div>
-          <button class="btn btn-sm btn-primary" (click)="openEditRolesModal(user)">
+          <button class="btn btn-sm btn-primary align-self-md-center" (click)="openEditRolesModal(user)">
             Editar Roles
           </button>
         </li>
@@ -29,7 +31,7 @@
   </div>
 </div>
 
-<!-- Modal controlado con Angular -->
+<!-- MODAL EDITAR ROLES -->
 <div
   class="modal fade"
   [class.show]="isModalOpen"
@@ -40,8 +42,8 @@
   [attr.aria-hidden]="!isModalOpen"
 >
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-content shadow rounded-4">
+      <div class="modal-header bg-primary text-white rounded-top-4">
         <h5 class="modal-title">Editar Roles de Usuario</h5>
         <button
           type="button"
@@ -68,19 +70,11 @@
         </form>
       </div>
 
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          (click)="closeModal()"
-        >
+      <div class="modal-footer d-flex justify-content-between">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">
           Cancelar
         </button>
-        <button
-          type="button"
-          class="btn btn-success"
-          (click)="submitEditRoles()"
-        >
+        <button type="button" class="btn btn-success" (click)="submitEditRoles()">
           Guardar Cambios
         </button>
       </div>

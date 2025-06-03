@@ -41,7 +41,6 @@ class AppointmentController extends AbstractController
 
         $appointment = new Appointment();
         $appointment->setDate(new \DateTime($data['date']));
-        $appointment->setObservation($data['observations'] ?? null);
         $appointment->setCreatedAt(new \DateTime('Europe/Madrid'));
         $appointment->setPatient($patient);
         $appointment->setDoctor($doctor);
@@ -67,7 +66,6 @@ class AppointmentController extends AbstractController
             $data[] = [
                 'id' => $appointment->getId(),
                 'date' => $appointment->getDate()->format('Y-m-d H:i:s'),
-                'observations' => $appointment->getObservation(),
                 'state' => $appointment->getStatus(),
                 'doctor_first_name' => $doctor->getFirstName(),
                 'doctor_last_name' => $doctor->getLastName(),
@@ -103,7 +101,6 @@ class AppointmentController extends AbstractController
 
             $data[] = [
                 'date' => $appointment->getDate()->format('Y-m-d H:i:s'),
-                'observations' => $appointment->getObservation(),
                 'first_name' => $doctor->getFirstName(),
                 'last_name' => $doctor->getLastName(),
                 'treatment' => $treatment->getName(),

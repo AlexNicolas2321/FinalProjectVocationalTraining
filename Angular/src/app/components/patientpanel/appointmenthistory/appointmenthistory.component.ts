@@ -8,7 +8,6 @@ import { jwtDecode } from 'jwt-decode';
 interface AppointmentData {
   id: number;
   date: string;
-  observations?: string;
   first_name: string;
   last_name: string;
   treatment: string;

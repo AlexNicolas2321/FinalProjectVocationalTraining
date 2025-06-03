@@ -1,31 +1,37 @@
 <div class="appointment-history container mt-4">
-    <h2 class="mb-4">Appointment History</h2>
-  
-    <table *ngIf="appointments.length > 0" class="table table-striped table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th>Fecha</th>
-          <th>Observaciones</th>
-          <th>Nombre del doctor</th>
-          <th>Apellido del doctor</th>
-          <th>Tratamiento</th>
-          <th>Estado cita</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let a of appointments">
-          <td>{{ a.date }}</td>
-          <td>{{ a.observations || 'N/A' }}</td>
-          <td>{{ a.first_name || 'N/A' }}</td>
-          <td>{{ a.last_name || 'N/A' }}</td>
-          <td>{{ a.treatment || 'N/A' }}</td>
-          <td>{{ a.state || 'N/A' }}</td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <div *ngIf="appointments.length === 0" class="alert alert-warning">
-      No appointments found.
-    </div>
+  <h2 class="mb-4">Historial de Citas</h2>
+
+  <table *ngIf="appointments.length > 0" class="table table-striped table-bordered table-hover">
+    <thead class="table-dark text-center">
+      <tr>
+        <th>Fecha</th>
+        <th>Nombre del Doctor</th>
+        <th>Apellido del Doctor</th>
+        <th>Tratamiento</th>
+        <th>Estado de la Cita</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let appointment of appointments" class="align-middle text-center">
+        <td>{{ appointment.date || 'N/A' }}</td>
+        <td>{{ appointment.first_name || 'N/A' }}</td>
+        <td>{{ appointment.last_name || 'N/A' }}</td>
+        <td>{{ appointment.treatment || 'N/A' }}</td>
+        <td>
+          <span class="badge" [ngClass]="{
+            'bg-warning': appointment.state === 'pending',
+            'bg-success': appointment.state === 'confirmed',
+            'bg-danger': appointment.state === 'cancelled',
+            'bg-secondary': !appointment.state
+          }">
+            {{ appointment.state ? (appointment.state | titlecase) : 'Desconocido' }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="appointments.length === 0" class="alert alert-info text-center">
+    No se encontraron citas registradas.
   </div>
-  
+</div>

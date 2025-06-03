@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 interface AppointmentData {
   id: number;
   date: string;
-  observations?: string;
   first_name: string;
   last_name: string;
   treatment: string;
@@ -49,28 +48,4 @@ export class AppointmentsviewComponent {
   }
 
  
-
-  saveObservation() {
-    if (this.editingAppointment) {
-      const obs = this.editingAppointment.observations || '';
-      this.appointmentService.editeAppointmentObservation(this.editingAppointment.id, obs).subscribe({
-        next: () => {
-          // Actualizamos en la lista local
-          const index = this.appointments.findIndex(a => a.id === this.editingAppointment!.id);
-          if (index !== -1) {
-            this.appointments[index].observations = obs;
-          }
-          this.editingAppointment = null;
-          console.log('Appointment observation updated successfully');
-        },
-        error: (err) => {
-          console.error('Error updating appointment observation', err);
-        }
-      });
-    }
-  }
-
-  cancelEdit() {
-    this.editingAppointment = null;
-  }
 }

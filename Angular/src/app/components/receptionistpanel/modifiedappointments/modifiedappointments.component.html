@@ -1,56 +1,72 @@
-<div class="appointment-history container mt-4">
-  <h2 class="mb-4">Historial Citas</h2>
+<div class="container mt-5">
+  <div class="card shadow-sm rounded-4">
+    <div class="card-header bg-dark text-white rounded-top-4">
+      <h5 class="mb-0">Historial de Citas</h5>
+    </div>
 
-  <table *ngIf="appointments.length > 0" class="table table-striped table-bordered">
-    <thead class="table-dark">
-      <tr>
-        <th>Fecha</th>
-        <th>DNI del paciente</th>
-        <th>Observaciones</th>
-        <th>Nombre del doctor</th>
-        <th>Apellido del doctor</th>
-        <th>Tratamiento</th>
-        <th>Nombre del paciente</th>
-        <th>Apellido del paciente</th>
-        <th>Teléfono del paciente</th>
-        <th>Estado de la cita</th>
-        <th>Descargar PDF</th> <!-- Nueva columna -->
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let appointment of appointments">
-        <td>{{ appointment.date || 'N/A' }}</td>
-        <td>{{ appointment.user_dni || 'N/A' }}</td>
-        <td>{{ appointment.observations || 'N/A' }}</td>
-        <td>{{ appointment.doctor_first_name || 'N/A' }}</td>
-        <td>{{ appointment.doctor_last_name || 'N/A' }}</td>
-        <td>{{ appointment.treatment || 'N/A' }}</td>
-        <td>{{ appointment.patient_first_name || 'N/A' }}</td>
-        <td>{{ appointment.patient_last_name || 'N/A' }}</td>
-        <td>{{ appointment.patient_phone || 'N/A' }}</td>
-        <td>
-          {{ appointment.state || 'N/A' }}
-          <button (click)="appointment.editing = !appointment.editing" class="btn btn-primary btn-sm ms-2">Editar</button>
-          <div *ngIf="appointment.editing">
-            <select [(ngModel)]="appointment.newStatus" class="form-select form-select-sm mt-1">
-              <option value="pending">Pending</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-            <button (click)="updateStatus(appointment.id, appointment.newStatus)" class="btn btn-success btn-sm mt-1">Guardar</button>
-          </div>
-        </td>
-        <td>
-          <!-- Botón para descargar PDF siempre visible o solo si confirmado -->
-          <button 
-            *ngIf="appointment.state === 'confirmed'" 
-            (click)="downloadPdf(appointment.id)" 
-            class="btn btn-outline-secondary btn-sm"
-          >
-            Descargar PDF
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="card-body p-0">
+      <div *ngIf="appointments.length > 0" class="table-responsive">
+        <table class="table table-striped table-bordered table-hover align-middle m-0">
+          <thead class="table-dark text-center">
+            <tr>
+              <th>Fecha</th>
+              <th>DNI Paciente</th>
+              <th>Observaciones</th>
+              <th>Doctor</th>
+              <th>Tratamiento</th>
+              <th>Paciente</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let appointment of appointments">
+              <td>{{ appointment.date || 'N/A' }}</td>
+              <td>{{ appointment.user_dni || 'N/A' }}</td>
+              <td>{{ appointment.observations || 'N/A' }}</td>
+              <td>
+                {{ appointment.doctor_first_name || 'N/A' }} {{ appointment.doctor_last_name || '' }}
+              </td>
+              <td>{{ appointment.treatment || 'N/A' }}</td>
+              <td>
+                {{ appointment.patient_first_name || 'N/A' }} {{ appointment.patient_last_name || '' }}
+              </td>
+              <td>{{ appointment.patient_phone || 'N/A' }}</td>
+              <td>
+                <span class="badge bg-secondary">{{ appointment.state || 'N/A' }}</span>
+                <button (click)="appointment.editing = !appointment.editing"
+                        class="btn btn-outline-primary btn-sm mt-1 ms-1">
+                  Editar
+                </button>
+                <div *ngIf="appointment.editing" class="mt-2">
+                  <select [(ngModel)]="appointment.newStatus" class="form-select form-select-sm mb-1">
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                  <button
+                    (click)="updateStatus(appointment.id, appointment.newStatus)"
+                    class="btn btn-success btn-sm w-100"
+                  >
+                    Guardar
+                  </button>
+                </div>
+                <button
+                  *ngIf="appointment.state === 'confirmed'"
+                  (click)="downloadPdf(appointment.id)"
+                  class="btn btn-outline-secondary btn-sm mt-2 w-100"
+                >
+                  PDF
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="appointments.length === 0" class="p-3 text-center">
+        <em>No hay citas registradas aún.</em>
+      </div>
+    </div>
+  </div>
 </div>

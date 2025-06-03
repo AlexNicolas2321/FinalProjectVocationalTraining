@@ -1,87 +1,94 @@
 <!-- Hero Section -->
-<header class="bg-light ">
-    <div class="container text-center py-5">
-        <h1 class="display-4 text-primary fw-bold">Sonríe con confianza</h1>
-        <p class="lead text-muted">Cuidamos tu salud bucal con tecnología avanzada y un equipo humano cercano.</p>
-        <a class="btn btn-primary btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#appointmentModal">Pide tu
-            cita</a>
-    </div>
-</header>
-
-<section class="py-5 bg-white">
+<header class="bg-primary text-white text-center py-5" style="background: linear-gradient(135deg, #007bff, #0056b3);">
     <div class="container">
-      <div class="row text-center">
+      <h1 class="display-4 fw-bold mb-3">Sonríe con confianza</h1>
+      <p class="lead mb-4">Cuidamos tu salud bucal con tecnología avanzada y un equipo humano cercano.</p>
+      <a class="btn btn-light btn-lg shadow" data-bs-toggle="modal" data-bs-target="#appointmentModal" aria-label="Pide tu cita">
+        Pide tu cita <i class="bi bi-calendar-check ms-2"></i>
+      </a>
+    </div>
+  </header>
+  
+  <section class="py-5 bg-white">
+    <div class="container">
+      <div class="row">
         <div *ngFor="let treatment of treatments" class="col-md-4 mb-4">
-          <img [src]="treatment.img" class="mb-3" width="60" [alt]="treatment.name">
-          <h5 class="fw-bold">{{ treatment.name }}</h5>
-          <p class="text-muted">{{ treatment.description }}</p>
-          <p><strong>Doctor:</strong> {{ treatment.doctor_first_name }} {{ treatment.doctor_last_name }}</p>
-          <p><strong>Precio: </strong>{{ treatment.price | currency:'USD' }}</p>
+          <div class="card h-100 shadow-sm hover-shadow">
+            <img [src]="treatment.img" class="card-img-top mx-auto mt-3" style="width: 60px; height: 60px; object-fit: contain;" [alt]="treatment.name">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title fw-bold">{{ treatment.name }}</h5>
+              <p class="card-text text-muted flex-grow-1">{{ treatment.description }}</p>
+              <p class="mb-1"><strong>Doctor:</strong> {{ treatment.doctor_first_name }} {{ treatment.doctor_last_name }}</p>
+              <p class="mb-3"><strong>Precio:</strong> {{ treatment.price | currency:'EUR':'symbol':'1.2-2' }}</p>
+              <button class="btn btn-primary mt-auto" data-bs-toggle="modal" data-bs-target="#appointmentModal" (click)="selectTreatment(treatment.id!)">
+                Pedir cita
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
   
-
-
-
-
-
-
-
-
-
-
-
-<!-- Modal Bootstrap -->
-<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+  <!-- Modal Bootstrap -->
+  <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- Cabecera del modal -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="appointmentModalLabel">Solicitar cita</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-
-            <!-- Cuerpo del modal -->
-            <div class="modal-body">
-                <form (ngSubmit)="submitForm()" #form="ngForm">
-                    <!-- Fecha -->
-                    <div class="mb-3">
-                        <label for="fecha" class="form-label">Fecha</label>
-                        <input type="date" class="form-control" id="fecha" name="fecha" [(ngModel)]="fecha"
-                            onkeydown="return false" [min]="minFecha" required />
-                    </div>
-
-                    <!-- HORAS (radio) -->
-                    <div class="mb-3">
-                        <label class="form-label">Hora disponible</label>
-                        <div *ngFor="let hora of horasDisponibles">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="hora" [value]="hora"
-                                    [(ngModel)]="horaSeleccionada" required id="hora-{{ hora }}" />
-                                <label class="form-check-label" [for]="'hora-' + hora">{{ hora }}</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tratamiento -->
-                    <div class="mb-3">
-                        <label for="tratamiento" class="form-label">Tratamiento</label>
-                        <select id="tratamiento" name="tratamiento" class="form-select" [(ngModel)]="selectedTreatmentId"
-                            required>
-                            <option *ngFor="let tratamiento of treatments" [value]="tratamiento.id">
-                                {{ tratamiento.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <!-- Enviar -->
-                    <button type="submit" class="btn btn-success" [disabled]="!form.valid || !horaSeleccionada">
-                        Enviar cita
-                    </button>
-                </form>
-            </div>
+      <div class="modal-content">
+  
+        <!-- Cabecera del modal -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="appointmentModalLabel">Solicitar cita</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
+  
+        <!-- Cuerpo del modal -->
+        <div class="modal-body">
+          <form (ngSubmit)="submitForm()" #form="ngForm">
+            <!-- Fecha -->
+            <div class="mb-3">
+              <label for="fecha" class="form-label">Fecha</label>
+              <input type="date" class="form-control" id="fecha" name="fecha" [(ngModel)]="fecha"
+                onkeydown="return false" [min]="minFecha" required />
+            </div>
+  
+            <!-- HORAS (radio) -->
+            <div class="mb-3">
+              <label class="form-label">Hora disponible</label>
+              <div *ngFor="let hora of horasDisponibles">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="hora" [value]="hora"
+                    [(ngModel)]="horaSeleccionada" required id="hora-{{ hora }}" />
+                  <label class="form-check-label" [for]="'hora-' + hora">{{ hora }}</label>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Tratamiento -->
+            <div class="mb-3">
+              <label for="tratamiento" class="form-label">Tratamiento</label>
+              <select id="tratamiento" name="tratamiento" class="form-select" [(ngModel)]="selectedTreatmentId"
+                required>
+                <option *ngFor="let tratamiento of treatments" [value]="tratamiento.id">
+                  {{ tratamiento.name }}
+                </option>
+              </select>
+            </div>
+            <!-- Enviar -->
+            <button type="submit" class="btn btn-success" [disabled]="!form.valid || !horaSeleccionada">
+              Enviar cita
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+  
+  <!-- CSS para hover-shadow (puedes ponerlo en tu archivo CSS) -->
+  <style>
+    .hover-shadow:hover {
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      transform: translateY(-5px);
+      transition: all 0.3s ease;
+    }
+  </style>
+  

@@ -20,14 +20,14 @@ export class HomeComponent implements OnInit {
   horaSeleccionada: string = '';
   treatments: Treatment[] = [];
   doctorId: number = 0;
-  selectedTreatmentId: number = 0;
+  selectedTreatmentId: number = 0 ;
   message: string = '';
   error: string = '';
 
   constructor(
     private treatmentService: TreatmentService,
     private appointmentService: AppointmentService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.setMinFecha();
@@ -36,16 +36,16 @@ export class HomeComponent implements OnInit {
     this.treatmentService.getAllTreatments().subscribe({
       next: (data: Treatment[]) => {
         this.treatments = data;
-        this.treatments.forEach(treatment =>{
-          if(treatment.name=="limpieza_bucal"){
-            treatment.img="http://localhost:8000/img/limpieza_bucal.jpg";
+        this.treatments.forEach(treatment => {
+          if (treatment.name == "limpieza_bucal") {
+            treatment.img = "http://localhost:8000/img/limpieza_bucal.jpg";
           }
-          if(treatment.name=="cita"){
-            treatment.img="http://localhost:8000/img/cita.jpg";
+          if (treatment.name == "cita") {
+            treatment.img = "http://localhost:8000/img/cita.jpg";
 
           }
-          if(treatment.name==="ortodoncia"){
-            treatment.img="http://localhost:8000/img/ortodoncia.jpg";
+          if (treatment.name === "ortodoncia") {
+            treatment.img = "http://localhost:8000/img/ortodoncia.jpg";
 
           }
         })
@@ -77,7 +77,16 @@ export class HomeComponent implements OnInit {
       this.horasSeleccionadas = this.horasSeleccionadas.filter(h => h !== hora);
     }
   }
+  selectTreatment(treatmentId: number): void {
+    this.selectedTreatmentId = treatmentId;
+    this.fecha = this.minFecha;          // Fecha mínima por defecto
+    this.horaSeleccionada = '';          // Limpia la hora seleccionada
+    this.message = '';
+    this.error = '';
+    this.fecha = '';
 
+  }
+  
   submitForm(): void {
     this.selectedTreatmentId = Number(this.selectedTreatmentId); // Asegura que sea número
 
@@ -85,13 +94,14 @@ export class HomeComponent implements OnInit {
 
     const selectedTreatment = this.treatments.find(t => t.id === this.selectedTreatmentId);
 
+
     if (!selectedTreatment) {
       this.error = 'Tratamiento no encontrado';
       this.message = '';
       console.error(this.error);
       return;
     }
-console.log(selectedTreatment);
+    console.log(selectedTreatment);
     if (selectedTreatment.doctorId === null || selectedTreatment.doctorId === undefined) {
       this.error = 'El tratamiento no tiene un doctor asignado';
       this.message = '';
@@ -106,7 +116,6 @@ console.log(selectedTreatment);
     const appointment = {
       userId: this.userId,
       date: fechaCompleta,
-      observations: null,
       doctorId: this.doctorId,
     };
 

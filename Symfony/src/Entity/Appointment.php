@@ -19,8 +19,7 @@ class Appointment
     #[ORM\Column(length: 20)]
     private string $status = "pending";
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $observations;
+  
 
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $created_at;
@@ -54,16 +53,7 @@ class Appointment
         return $this;
     }
 
-    public function getObservation(): ?string
-    {
-        return $this->observations;
-    }
-
-    public function setObservation(?string $observations): self
-    {
-        $this->observations = $observations;
-        return $this;
-    }
+  
     
     public function getStatus(): string{
         return $this->status;
