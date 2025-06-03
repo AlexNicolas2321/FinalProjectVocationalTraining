@@ -1,41 +1,120 @@
-<form (ngSubmit)="onSubmit()" class="p-4 border rounded shadow-sm bg-light">
-  <div class="mb-3">
-    <label for="email" class="form-label">Correo electrónico</label>
-    <input type="email" id="email" class="form-control" placeholder="Email" [(ngModel)]="formData.email" name="email" required />
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card shadow-lg" style="max-width: 500px; width: 100%;">
+    <div class="card-body">
+      <h3 class="card-title text-center mb-4">Registro de Usuario</h3>
+      <form (ngSubmit)="onSubmit()" #userForm="ngForm" novalidate>
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder="Email"
+            [(ngModel)]="formData.email"
+            name="email"
+            required
+            email
+            #email="ngModel"
+          />
+          <div *ngIf="email.invalid && email.touched" class="text-danger small">
+            Por favor, introduce un correo válido.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            placeholder="Contraseña"
+            [(ngModel)]="formData.password"
+            name="password"
+            required
+            minlength="7"
+            #password="ngModel"
+          />
+          <div *ngIf="password.invalid && password.touched" class="text-danger small">
+            La contraseña debe tener al menos 7 caracteres.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="dni" class="form-label">DNI</label>
+          <input
+            type="text"
+            id="dni"
+            class="form-control"
+            placeholder="DNI"
+            [(ngModel)]="formData.dni"
+            name="dni"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="first_name" class="form-label">Nombre</label>
+          <input
+            type="text"
+            id="first_name"
+            class="form-control"
+            placeholder="Nombre"
+            [(ngModel)]="formData.first_name"
+            name="first_name"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="last_name" class="form-label">Apellido</label>
+          <input
+            type="text"
+            id="last_name"
+            class="form-control"
+            placeholder="Apellido"
+            [(ngModel)]="formData.last_name"
+            name="last_name"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="phone" class="form-label">Teléfono</label>
+          <input
+            type="text"
+            id="phone"
+            class="form-control"
+            placeholder="Teléfono"
+            [(ngModel)]="formData.phone"
+            name="phone"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="birth_date" class="form-label">Fecha de nacimiento</label>
+          <input
+            type="date"
+            id="birth_date"
+            class="form-control"
+            [(ngModel)]="formData.birth_date"
+            name="birth_date"
+            #birthDate="ngModel"
+            (ngModelChange)="validateBirthDate()"
+            required
+          />
+          <div *ngIf="birthDateInvalid" class="text-danger small mt-1">
+            La fecha de nacimiento no puede ser futura ni indicar más de 110 años.
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100"
+          [disabled]="userForm.invalid || birthDateInvalid"
+        >
+          Registrar
+        </button>
+
+        <div *ngIf="message" class="alert alert-success mt-3" role="alert">{{ message }}</div>
+        <div *ngIf="error" class="alert alert-danger mt-3" role="alert">{{ error }}</div>
+      </form>
+    </div>
   </div>
-
-  <div class="mb-3">
-    <label for="password" class="form-label">Contraseña</label>
-    <input type="password" id="password" class="form-control" placeholder="Contraseña" [(ngModel)]="formData.password" name="password" required />
-  </div>
-
-  <div class="mb-3">
-    <label for="dni" class="form-label">DNI</label>
-    <input type="text" id="dni" class="form-control" placeholder="DNI" [(ngModel)]="formData.dni" name="dni" />
-  </div>
-
-  <div class="mb-3">
-    <label for="first_name" class="form-label">Nombre</label>
-    <input type="text" id="first_name" class="form-control" placeholder="Nombre" [(ngModel)]="formData.first_name" name="first_name" />
-  </div>
-
-  <div class="mb-3">
-    <label for="last_name" class="form-label">Apellido</label>
-    <input type="text" id="last_name" class="form-control" placeholder="Apellido" [(ngModel)]="formData.last_name" name="last_name" />
-  </div>
-
-  <div class="mb-3">
-    <label for="phone" class="form-label">Teléfono</label>
-    <input type="text" id="phone" class="form-control" placeholder="Teléfono" [(ngModel)]="formData.phone" name="phone" />
-  </div>
-
-  <div class="mb-3">
-    <label for="birth_date" class="form-label">Fecha de nacimiento</label>
-    <input type="date" id="birth_date" class="form-control" [(ngModel)]="formData.birth_date" name="birth_date" />
-  </div>
-
-  <button type="submit" class="btn btn-primary w-100">Registrar</button>
-
-  <div *ngIf="message" class="alert alert-success mt-3" role="alert">{{ message }}</div>
-  <div *ngIf="error" class="alert alert-danger mt-3" role="alert">{{ error }}</div>
-</form>
+</div>

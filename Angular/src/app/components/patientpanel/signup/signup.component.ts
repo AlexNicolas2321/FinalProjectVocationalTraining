@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../../../services/authentication.service'; 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +11,7 @@ import dayjs from 'dayjs';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
-  formData = {
+  formData: any = {
     email: '',
     password: '',
     dni: '',
@@ -20,27 +19,69 @@ export class SignupComponent {
     last_name: '',
     phone: '',
     birth_date: '',
-    created_at: ''  // lo rellenamos en ngOnInit
+    created_at:""
   };
 
+  birthDateInvalid = false;
   message = '';
   error = '';
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(private authenticationService: AuthenticationService) {}
 
-  ngOnInit() {
-    this.formData.created_at = dayjs().format('YYYY-MM-DD HH:mm:ss');
+  validateBirthDate() {
+    const birthDateStr = this.formData.birth_date;
+    if (!birthDateStr) {
+      this.birthDateInvalid = false;
+      return;
+    }
 
+    const birthDate = new Date(birthDateStr);
+
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 110);
+
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 5);
+
+    this.birthDateInvalid =
+      birthDate < maxDate || birthDate > minDate;
   }
 
   onSubmit() {
-    this.authService.signUp(this.formData).subscribe({
-      next: (res) => {
-        this.message = '¡Registro exitoso!';
+    this.validateBirthDate();
+
+    if (this.birthDateInvalid) {
+      this.error = 'La fecha de nacimiento no es válida.';
+      this.message = '';
+      return;
+    }
+
+    if (!this.formData.email || !this.formData.password) {
+      this.error = 'Por favor, rellena los campos obligatorios.';
+      this.message = '';
+      return;
+    }
+
+    if (this.formData.dni && this.formData.dni.length !== 9) {
+      this.error = 'El DNI debe tener exactamente 9 caracteres.';
+      this.message = '';
+      return;
+    }
+
+    if (this.formData.password.length < 7) {
+      this.error = 'La contraseña debe tener al menos 7 caracteres.';
+      this.message = '';
+      return;
+    }
+
+    this.formData.created_at= new Date();
+    this.authenticationService.signUp(this.formData).subscribe({
+      next: () => {
         this.error = '';
+        this.message = '¡Registro exitoso!';
       },
-      error: (err) => {
-        this.error = 'Error en el registro: ' + (err.error.error || 'Servidor no disponible');
+      error: () => {
+        this.error = 'No se pudo registrar el usuario.';
         this.message = '';
       }
     });
