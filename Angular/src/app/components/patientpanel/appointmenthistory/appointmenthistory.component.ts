@@ -42,6 +42,7 @@ export class AppointmenthistoryComponent implements OnInit{
       
      this.appointmentService.getSpecificAppointments(user_id).subscribe({
       next : ($data : AppointmentData[])=>{
+        console.log($data);
         this.appointments=$data;
         console.log('tratamientos obtenidos',this.appointments);      
       },
@@ -55,7 +56,21 @@ export class AppointmenthistoryComponent implements OnInit{
  
   }
 
+  cancelAppointment(id :number){
+    console.log(id);
+    this.appointmentService.cancelAppointment(id).subscribe({
+      next : res =>{
+        const appointment = this.appointments.find(a => a.id === id);
+        if (appointment) {
+          appointment.state = 'cancelled';
+        }
+      },
+      error :err =>{
+      console.error('Error cancelando cita:', err);
 
+      }
+    })
+  }
 
 
 

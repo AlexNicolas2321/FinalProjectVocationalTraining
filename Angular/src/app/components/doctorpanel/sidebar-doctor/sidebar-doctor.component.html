@@ -4,10 +4,10 @@
     <nav class="d-flex flex-column flex-shrink-0 p-3 bg-dark vh-100 text-white" style="width: 250px;">
       <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-        <span class="fs-4">Sidebar</span>
+        <span class="fs-4">Bienvenido doctor</span>
       </a>
       <hr>
-      <ul class="nav nav-pills flex-column mb-auto">
+      <ul class="nav nav-pills flex-column mb-4"> <!-- mb-4 para dejar espacio abajo -->
         <li class="nav-item">
           <a routerLink="/doctor/show_patients" 
              routerLinkActive="active" 
@@ -34,15 +34,10 @@
           </a>
         </li>
       </ul>
-      <hr>
-      <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-          <strong>mdo</strong>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-          <li><a class="dropdown-item" (click)="logout()">Sign out</a></li>
-        </ul>
+      <div class="pt-3 border-top">
+        <button class="btn btn-danger w-100" (click)="logout()">
+          <i class="bi bi-box-arrow-right me-2"></i> Sign out
+        </button>
       </div>
     </nav>
   </div>

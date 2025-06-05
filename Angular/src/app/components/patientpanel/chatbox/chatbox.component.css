@@ -1,0 +1,13 @@
+.chat-container {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .chat-messages {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  

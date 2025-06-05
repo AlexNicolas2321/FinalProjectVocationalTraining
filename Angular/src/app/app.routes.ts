@@ -16,7 +16,7 @@ import { CreateroleComponent } from './components/adminpanel/createrole/createro
 import { EditeUserRolesComponent } from './components/adminpanel/editeuser/editeuser.component';
 import { AdministratetreatmentsComponent } from './components/doctorpanel/administratetreatments/administratetreatments.component';
 import { AppointmentsviewComponent } from './components/doctorpanel/appointmentsview/appointmentsview.component';
-
+import { ChatboxComponent } from './components/patientpanel/chatbox/chatbox.component';
 
 export const routes: Routes = [
     {path:"admin" ,component:AdminComponent,children:[
@@ -35,8 +35,8 @@ export const routes: Routes = [
         {path:"sign_up" , component:SignupComponent},
         {path:"sign_in" , component:SigninComponent},
         {path:"home" , component:HomeComponent},
-        {path:"AppointmentsHistory", component:AppointmenthistoryComponent}
-
+        {path:"AppointmentsHistory", component:AppointmenthistoryComponent},
+        {path:"chatBox", component:ChatboxComponent}
     ]},
     {path:'receptionist' ,component:ReceptionistComponent,children:[
         { path: '', redirectTo: 'show_appointments', pathMatch: 'full' },

@@ -9,6 +9,7 @@
         <th>Apellido del Doctor</th>
         <th>Tratamiento</th>
         <th>Estado de la Cita</th>
+        <th>Cancelar Cita</th>
       </tr>
     </thead>
     <tbody>
@@ -27,6 +28,19 @@
             {{ appointment.state ? (appointment.state | titlecase) : 'Desconocido' }}
           </span>
         </td>
+        <td>
+          <ng-container *ngIf="appointment.state !== 'cancelled'; else canceledInfo">
+            <button 
+              class="btn btn-primary" 
+              (click)="cancelAppointment(appointment.id)">
+              Cancelar Cita
+            </button>
+          </ng-container>
+          <ng-template #canceledInfo>
+            <span class="text-muted">Cita cancelada</span>
+          </ng-template>
+        </td>
+        
       </tr>
     </tbody>
   </table>

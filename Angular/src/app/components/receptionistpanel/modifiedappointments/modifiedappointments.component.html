@@ -11,7 +11,7 @@
             <tr>
               <th>Fecha</th>
               <th>DNI Paciente</th>
-              <th>Observaciones</th>
+              <th>Email</th>
               <th>Doctor</th>
               <th>Tratamiento</th>
               <th>Paciente</th>
@@ -23,7 +23,7 @@
             <tr *ngFor="let appointment of appointments">
               <td>{{ appointment.date || 'N/A' }}</td>
               <td>{{ appointment.user_dni || 'N/A' }}</td>
-              <td>{{ appointment.observations || 'N/A' }}</td>
+              <td>{{ appointment.email || 'N/A' }}</td>
               <td>
                 {{ appointment.doctor_first_name || 'N/A' }} {{ appointment.doctor_last_name || '' }}
               </td>

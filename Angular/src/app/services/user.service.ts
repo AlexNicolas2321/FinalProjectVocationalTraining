@@ -36,4 +36,8 @@ export class UserService {
   editeRoleUsers(id:number,role:string[]) : Observable<any>{
     return this.http.patch(`${this.apiUrl}editRoleUser`,{id,role})
   }
+
+  getUserByDni(dni:string): Observable<any>{
+    return this.http.get(`${this.apiUrl}getUserByDni/${dni}`,)
+  }
 }

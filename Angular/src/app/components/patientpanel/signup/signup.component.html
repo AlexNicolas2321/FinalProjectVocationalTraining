@@ -1,10 +1,14 @@
-<div class="container d-flex justify-content-center align-items-center vh-100">
+<div class="container d-flex justify-content-center align-items-start vh-100 mt-5">
   <div class="card shadow-lg" style="max-width: 500px; width: 100%;">
     <div class="card-body">
       <h3 class="card-title text-center mb-4">Registro de Usuario</h3>
       <form (ngSubmit)="onSubmit()" #userForm="ngForm" novalidate>
+
+        <!-- Email -->
         <div class="mb-3">
-          <label for="email" class="form-label">Correo electrónico</label>
+          <label for="email" class="form-label">
+            Correo electrónico 
+          </label>
           <input
             type="email"
             id="email"
@@ -12,17 +16,21 @@
             placeholder="Email"
             [(ngModel)]="formData.email"
             name="email"
-            required
             email
             #email="ngModel"
+            required
           />
           <div *ngIf="email.invalid && email.touched" class="text-danger small">
-            Por favor, introduce un correo válido.
+            Por favor, introduce un correo válido. 
           </div>
+          
         </div>
 
+        <!-- Password -->
         <div class="mb-3">
-          <label for="password" class="form-label">Contraseña</label>
+          <label for="password" class="form-label">
+            Contraseña <span class="text-danger">*</span>
+          </label>
           <input
             type="password"
             id="password"
@@ -39,8 +47,9 @@
           </div>
         </div>
 
+        <!-- DNI -->
         <div class="mb-3">
-          <label for="dni" class="form-label">DNI</label>
+          <label for="dni" class="form-label">DNI<span class="text-danger">*</span></label>
           <input
             type="text"
             id="dni"
@@ -51,8 +60,11 @@
           />
         </div>
 
+        <!-- Nombre -->
         <div class="mb-3">
-          <label for="first_name" class="form-label">Nombre</label>
+          <label for="first_name" class="form-label">
+            Nombre <span class="text-danger">*</span>
+          </label>
           <input
             type="text"
             id="first_name"
@@ -60,11 +72,15 @@
             placeholder="Nombre"
             [(ngModel)]="formData.first_name"
             name="first_name"
+            required
           />
         </div>
 
+        <!-- Apellido -->
         <div class="mb-3">
-          <label for="last_name" class="form-label">Apellido</label>
+          <label for="last_name" class="form-label">
+            Apellido <span class="text-danger">*</span>
+          </label>
           <input
             type="text"
             id="last_name"
@@ -72,11 +88,15 @@
             placeholder="Apellido"
             [(ngModel)]="formData.last_name"
             name="last_name"
+            required
           />
         </div>
 
+        <!-- Teléfono -->
         <div class="mb-3">
-          <label for="phone" class="form-label">Teléfono</label>
+          <label for="phone" class="form-label">
+            Teléfono <span class="text-danger">*</span>
+          </label>
           <input
             type="text"
             id="phone"
@@ -84,11 +104,15 @@
             placeholder="Teléfono"
             [(ngModel)]="formData.phone"
             name="phone"
+            required
           />
         </div>
 
+        <!-- Fecha de nacimiento -->
         <div class="mb-3">
-          <label for="birth_date" class="form-label">Fecha de nacimiento</label>
+          <label for="birth_date" class="form-label">
+            Fecha de nacimiento <span class="text-danger">*</span>
+          </label>
           <input
             type="date"
             id="birth_date"
@@ -104,6 +128,7 @@
           </div>
         </div>
 
+        <!-- Submit -->
         <button
           type="submit"
           class="btn btn-primary w-100"
@@ -112,6 +137,7 @@
           Registrar
         </button>
 
+        <!-- Feedback -->
         <div *ngIf="message" class="alert alert-success mt-3" role="alert">{{ message }}</div>
         <div *ngIf="error" class="alert alert-danger mt-3" role="alert">{{ error }}</div>
       </form>

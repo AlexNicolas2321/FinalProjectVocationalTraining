@@ -32,5 +32,8 @@ export class AppointmentService {
   getAppointmentPdf(id: number) {
     return this.http.get(`${this.apiUrl}appointments/${id}/pdf`, { responseType: 'blob' });
   }
+  cancelAppointment(id:number): Observable<any>{
+    return this.http.patch<any>(`${this.apiUrl}cancelAppointment/${id}`,{})
+  }
   
 }

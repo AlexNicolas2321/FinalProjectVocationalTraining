@@ -101,15 +101,15 @@ class AppointmentController extends AbstractController
             $patientMail = $patient->getEmail();
 
             if ($data["status"] === "confirmed") {
-                $invoice= $this->invoiceService->createInvoiceForAppointment($appointment);
-               
-                $pdfContent=$invoice->getPdfFile();
+                $invoice = $this->invoiceService->createInvoiceForAppointment($appointment);
+
+                $pdfContent = $invoice->getPdfFile();
                 $email = (new Email())
-                    ->from('epmticnotifications@gmail.com')  
+                    ->from('epmticnotifications@gmail.com')
                     ->to($patientMail)
                     ->subject('Cita confirmada - Factura adjunta')
                     ->text('Hola, tu cita ha sido confirmada. La factura está adjunta a este correo.')
-                    ->attach($pdfContent, 'factura.pdf', 'application/pdf');  
+                    ->attach($pdfContent, 'factura.pdf', 'application/pdf');
 
                 try {
                     $mailer->send($email);
@@ -208,5 +208,51 @@ class AppointmentController extends AbstractController
         $response->headers->set('Content-Disposition', 'inline; filename="appointment_' . $id . '.pdf"');
 
         return $response;
+    }
+    #[Route('/api/getSpecificAppointments/{id}', name: 'get_specific_appointments', methods: ['GET'])]
+    public function getSpecificAppointments(int $id, EntityManagerInterface $em): JsonResponse
+    {
+
+
+
+        $patient = $em->getRepository(Patient::class)->findoneBy(['user' => $id]);
+
+
+        $appointments = $em->getRepository(Appointment::class)->findBy(['patient' => $patient]);
+
+        $data = [];
+
+        foreach ($appointments as $appointment) {
+            $doctor = $em->getRepository(Doctor::class)->find($appointment->getDoctor());
+            $treatment = $doctor->getTreatment();
+
+            $data[] = [
+                'id' => $appointment->getId(),
+                'date' => $appointment->getDate()->format('Y-m-d H:i:s'),
+                'first_name' => $doctor->getFirstName(),
+                'last_name' => $doctor->getLastName(),
+                'treatment' => $treatment->getName(),
+                'state' => $appointment->getStatus(),
+            ];
+        }
+
+
+        return new JsonResponse($data, 200);
+    }
+
+    #[Route('/api/cancelAppointment/{id}', name: 'cancel_appointment', methods: ['PATCH'])]
+    public function cancelAppointment(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $appointment = $em->getRepository(Appointment::class)->findOneBy(["id"=>$id]);
+
+        if (!$appointment) {
+            return new JsonResponse(['message' => 'Appointment not found'], 404);
+        }
+
+        $appointment->setStatus('cancelled');
+
+        $em->flush();
+
+        return new JsonResponse(['message' => 'Appointment cancelled successfully']);
     }
 }

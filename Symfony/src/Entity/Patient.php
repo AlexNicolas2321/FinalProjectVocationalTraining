@@ -22,7 +22,7 @@ class Patient
     #[ORM\Column(length: 20,unique:true)]
     private ?string $phone = null;
     
-    #[ORM\Column(type: 'string', length: 180)]
+    #[ORM\Column(type: 'string', length: 180 , nullable:true)]
     private string $email;
 
     #[ORM\Column(type: 'date')]

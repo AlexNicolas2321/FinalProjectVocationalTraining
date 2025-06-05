@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '../../../services/authentication.service'; 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -26,7 +27,7 @@ export class SignupComponent {
   message = '';
   error = '';
 
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(private authenticationService: AuthenticationService,private router :Router) {}
 
   validateBirthDate() {
     const birthDateStr = this.formData.birth_date;
@@ -79,6 +80,8 @@ export class SignupComponent {
       next: () => {
         this.error = '';
         this.message = '¡Registro exitoso!';
+        this.router.navigate(['/patient/home']);
+
       },
       error: () => {
         this.error = 'No se pudo registrar el usuario.';

@@ -29,7 +29,7 @@ export class SigninComponent {
           localStorage.setItem('token', res.token);
           const decodedToken = jwtDecode(res.token);
           console.log('Decoded token:', decodedToken);
-          // this.router.navigate(['/']);
+          this.router.navigate(['/patient/home']);
         } else {
           console.error('Token is missing or not a string');
           this.error = 'Token inválido recibido';
