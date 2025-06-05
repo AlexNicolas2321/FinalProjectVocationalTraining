@@ -55,6 +55,7 @@ class SignUpController extends AbstractController
         $patient->setLastName($data['last_name'] ?? '');
         $patient->setPhone($data['phone'] ?? '');
         $patient->setBirthDate(isset($data['birth_date']) ? new \DateTime($data['birth_date']) : null);
+        $patient->setEmail($data["email"]);
         $createdAt = new DateTime($data["created_at"]);
         $patient->setCreatedAt($createdAt);
         

@@ -21,6 +21,9 @@ class Patient
 
     #[ORM\Column(length: 20,unique:true)]
     private ?string $phone = null;
+    
+    #[ORM\Column(type: 'string', length: 180)]
+    private string $email;
 
     #[ORM\Column(type: 'date')]
     private \DateTimeInterface $birth_date;
@@ -86,6 +89,17 @@ class Patient
     public function setBirthDate(\DateTimeInterface $birth_date): self
     {
         $this->birth_date = $birth_date;
+        return $this;
+    }
+   
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
         return $this;
     }
 

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Doctor;
-use App\Entity\Patient;
 use App\Entity\Receptionist;
 use App\Entity\Role;
 use App\Entity\UserRole;
@@ -34,7 +33,26 @@ class UserController extends AbstractController
         return new JsonResponse($users);
     }
 
-    
+    #[Route('api/getUserByDni/{dni}', name: 'getUserByDni', methods: ['GET'])]
+    public function getUserByDni(string $dni,EntityManagerInterface $em): JsonResponse
+    {
+        $user = $em->getRepository(User::class)->findOneBy(['dni' => $dni]);
+        $patient = $user->getPatient();
+
+        if (!$patient) {
+            return new JsonResponse(['error' => 'Usuario no encontrado'], 404);
+        }
+        $data[]=[
+            "dni" =>$user->getDni(),
+            "first_name" => $patient->getFirstName(),
+            "last_name" => $patient->getLastName(),
+            "phone" => $patient->getPhone(),
+            "email" => $patient->getEmail(),
+        ];
+
+        return new JsonResponse($data);
+    }
+
     #[Route('api/getAllPatients', name: 'get_all_patients', methods: ['GET'])]
     public function getAllPatients(): JsonResponse
     {
@@ -49,6 +67,8 @@ class UserController extends AbstractController
                     "last_name" => $patient->getLastName(),
                     "phone" => $patient->getPhone(),
                     "birth_date" => $patient->getBirthDate(),
+                    "email" => $patient->getEmail(),
+
                 ];
             }
         }
