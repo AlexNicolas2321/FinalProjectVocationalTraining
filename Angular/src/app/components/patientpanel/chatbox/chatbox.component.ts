@@ -4,33 +4,36 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chatbox',
-  imports: [CommonModule,FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './chatbox.component.html',
   styleUrl: './chatbox.component.css'
 })
 export class ChatboxComponent {
-  messages = [{ sender: 'bot', text: 'Hola 👋 ¿En qué puedo ayudarte?' }];
-
-  options = [
-    '¿Qué debo llevar a mi cita?',
-    '¿Puedo cancelar una cita?',
-    '¿Cómo se paga?',
-    '¿Cuando recibo la factura?'
+  faqs = [
+    {
+      question: '¿Qué debo llevar a mi cita?',
+      answer: 'Solo necesitas tu DNI y llegar 10 minutos antes.',
+      expanded: false
+    },
+    {
+      question: '¿Puedo cancelar una cita?',
+      answer: 'Sí, puedes hacerlo desde tu historial de citas.',
+      expanded: false
+    },
+    {
+      question: '¿Cómo se paga?',
+      answer: 'El pago se realiza en recepción, en efectivo o tarjeta.',
+      expanded: false
+    },
+    {
+      question: '¿Cuándo recibo la factura?',
+      answer: 'Inmediatamente después de pagar se le entregará una copia física, además de mandarsele a su correo digitalmente en el caso de tener el correo registrado.',
+      expanded: false
+    }
   ];
 
-  handleClick(question: string): void {
-    this.messages.push({ sender: 'user', text: question });
-
-    const responses: Record<string, string> = {
-      '¿Qué debo llevar a mi cita?': 'Solo necesitas tu DNI y llegar 10 minutos antes.',
-      '¿Puedo cancelar una cita?': 'Sí, puedes hacerlo desde tu historial de citas',
-      '¿Cómo se paga?': 'El pago se realiza en recepción, en efectivo o tarjeta.',
-      '¿Cuando recibo la factura?':'Inmediatamente despues de pagar se le entregará una copia física , ademas de mandarsele a su correo digitalmente.'
-    };
-
-    const reply = responses[question] || 'Lo siento, no tengo una respuesta para eso.';
-    setTimeout(() => {
-      this.messages.push({ sender: 'bot', text: reply });
-    }, 500);
+  toggle(faq: any): void {
+    faq.expanded = !faq.expanded;
   }
 }
