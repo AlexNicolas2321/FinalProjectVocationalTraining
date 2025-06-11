@@ -1,0 +1,36 @@
+<div class="container my-5">
+    <h2 class="mb-4 text-primary">Buscar Calorías y Ejercicios</h2>
+  
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Ejercicio (ej. correr)"
+               [(ngModel)]="activity" />
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control" placeholder="Duración (minutos)"
+               [(ngModel)]="duration" />
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control" placeholder="Peso (kg)"
+               [(ngModel)]="weight" />
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-primary w-100" (click)="searchExercise()" [disabled]="loading">Buscar</button>
+      </div>
+    </div>
+  
+    <div *ngIf="loading" class="alert alert-info">Cargando datos...</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  
+    <div *ngIf="result?.calories?.length" class="row">
+        <div class="col-md-4" *ngFor="let item of result!.calories | slice:0:1">
+            <div class="card mb-3">
+              <div class="card-header bg-primary text-white">{{ item.name }}</div>
+              <div class="card-body bg-white text-dark">
+                <p class="card-text"><strong>Calorías por hora:</strong> {{ item.calories_per_hour }}</p>
+                <p class="card-text"><strong>Duración (min):</strong> {{ item.duration_minutes }}</p>
+                <p class="card-text"><strong>Total calorías:</strong> {{ item.total_calories }}</p>
+              </div>
+            </div>
+          </div>
+          

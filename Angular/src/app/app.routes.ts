@@ -17,6 +17,8 @@ import { EditeUserRolesComponent } from './components/adminpanel/editeuser/edite
 import { AdministratetreatmentsComponent } from './components/doctorpanel/administratetreatments/administratetreatments.component';
 import { AppointmentsviewComponent } from './components/doctorpanel/appointmentsview/appointmentsview.component';
 import { ChatboxComponent } from './components/patientpanel/chatbox/chatbox.component';
+import { NutritionComponent } from './components/patientpanel/nutrition/nutrition.component';
+import { ExerciseComponent } from './components/patientpanel/exercise/exercise.component';
 
 export const routes: Routes = [
     {path:"admin" ,component:AdminComponent,children:[
@@ -36,7 +38,9 @@ export const routes: Routes = [
         {path:"sign_in" , component:SigninComponent},
         {path:"home" , component:HomeComponent},
         {path:"AppointmentsHistory", component:AppointmenthistoryComponent},
-        {path:"chatBox", component:ChatboxComponent}
+        {path:"chatBox", component:ChatboxComponent},
+        {path:"nutrition", component:NutritionComponent},
+        {path:"exercise" , component:ExerciseComponent}
     ]},
     {path:'receptionist' ,component:ReceptionistComponent,children:[
         { path: '', redirectTo: 'show_appointments', pathMatch: 'full' },

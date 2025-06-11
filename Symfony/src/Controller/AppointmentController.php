@@ -104,20 +104,22 @@ class AppointmentController extends AbstractController
                 $invoice = $this->invoiceService->createInvoiceForAppointment($appointment);
 
                 $pdfContent = $invoice->getPdfFile();
+               if($data["email" !== null]){
                 $email = (new Email())
-                    ->from('epmticnotifications@gmail.com')
-                    ->to($patientMail)
-                    ->subject('Cita confirmada - Factura adjunta')
-                    ->text('Hola, tu cita ha sido confirmada. La factura está adjunta a este correo.')
-                    ->attach($pdfContent, 'factura.pdf', 'application/pdf');
+                ->from('epmticnotifications@gmail.com')
+                ->to($patientMail)
+                ->subject('Cita confirmada - Factura adjunta')
+                ->text('Hola, tu cita ha sido confirmada. La factura está adjunta a este correo.')
+                ->attach($pdfContent, 'factura.pdf', 'application/pdf');
 
-                try {
-                    $mailer->send($email);
-                } catch (\Throwable $e) {
-                    return $this->json([
-                        'error' => 'No se pudo enviar el correo: ' . $e->getMessage()
-                    ], 500);
-                }
+            try {
+                $mailer->send($email);
+            } catch (\Throwable $e) {
+                return $this->json([
+                    'error' => 'No se pudo enviar el correo: ' . $e->getMessage()
+                ], 500);
+            }
+               }
             }
 
             $em->flush();

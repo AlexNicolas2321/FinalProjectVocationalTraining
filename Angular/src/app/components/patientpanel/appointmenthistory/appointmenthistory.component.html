@@ -1,51 +1,62 @@
-<div class="appointment-history container mt-4">
-  <h2 class="mb-4">Historial de Citas</h2>
+<div class="appointment-history container mt-5">
+  <div class="bg-primary text-white rounded p-3 shadow-sm mb-4">
+    <h2 class="mb-0">Historial de Citas</h2>
+  </div>
 
-  <table *ngIf="appointments.length > 0" class="table table-striped table-bordered table-hover">
-    <thead class="table-dark text-center">
-      <tr>
-        <th>Fecha</th>
-        <th>Nombre del Doctor</th>
-        <th>Apellido del Doctor</th>
-        <th>Tratamiento</th>
-        <th>Estado de la Cita</th>
-        <th>Cancelar Cita</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let appointment of appointments" class="align-middle text-center">
-        <td>{{ appointment.date || 'N/A' }}</td>
-        <td>{{ appointment.first_name || 'N/A' }}</td>
-        <td>{{ appointment.last_name || 'N/A' }}</td>
-        <td>{{ appointment.treatment || 'N/A' }}</td>
-        <td>
-          <span class="badge" [ngClass]="{
-            'bg-warning': appointment.state === 'pending',
-            'bg-success': appointment.state === 'confirmed',
-            'bg-danger': appointment.state === 'cancelled',
-            'bg-secondary': !appointment.state
-          }">
-            {{ appointment.state ? (appointment.state | titlecase) : 'Desconocido' }}
+  <div class="table-responsive shadow-sm rounded">
+    <table *ngIf="appointments.length > 0" class="table table-striped table-hover align-middle mb-0" style="border: 1px solid #0d6efd;">
+      <thead class="table-primary text-primary">
+        <tr>
+          <th>Fecha</th>
+          <th>Nombre del Doctor</th>
+          <th>Apellido del Doctor</th>
+          <th>Tratamiento</th>
+          <th>Estado de la Cita</th>
+          <th>Cancelar Cita</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appointment of appointments">
+          <td>{{ appointment.date || 'N/A' }}</td>
+          <td>{{ appointment.first_name || 'N/A' }}</td>
+          <td>{{ appointment.last_name || 'N/A' }}</td>
+          <td>{{ appointment.treatment || 'N/A' }}</td>
+          <td>
+            <span 
+            class="badge rounded-pill px-3 py-2 text-uppercase"
+            [ngClass]="{
+              'bg-warning text-dark': appointment.state === 'pending',
+              'bg-success': appointment.state === 'confirmed',
+              'bg-danger': appointment.state === 'cancelled',
+              'bg-secondary': !appointment.state
+            }">
+            {{
+              appointment.state === 'pending' ? 'Pendiente' :
+              appointment.state === 'confirmed' ? 'Confirmada' :
+              appointment.state === 'cancelled' ? 'Cancelada' :
+              'Desconocido'
+            }}
           </span>
-        </td>
-        <td>
-          <ng-container *ngIf="appointment.state !== 'cancelled'; else canceledInfo">
-            <button 
-              class="btn btn-primary" 
-              (click)="cancelAppointment(appointment.id)">
-              Cancelar Cita
-            </button>
-          </ng-container>
-          <ng-template #canceledInfo>
-            <span class="text-muted">Cita cancelada</span>
-          </ng-template>
-        </td>
-        
-      </tr>
-    </tbody>
-  </table>
+          
+          </td>
+          <td>
+            <ng-container *ngIf="appointment.state !== 'cancelled'; else canceledInfo">
+              <button 
+                class="btn btn-outline-primary btn-sm" 
+                (click)="cancelAppointment(appointment.id)">
+                Cancelar Cita
+              </button>
+            </ng-container>
+            <ng-template #canceledInfo>
+              <span class="text-muted">Cita cancelada</span>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <div *ngIf="appointments.length === 0" class="alert alert-info text-center">
+  <div *ngIf="appointments.length === 0" class="alert alert-info text-center mt-4">
     No se encontraron citas registradas.
   </div>
 </div>

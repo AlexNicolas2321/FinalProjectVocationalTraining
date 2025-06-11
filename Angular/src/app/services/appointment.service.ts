@@ -9,7 +9,7 @@ import { Appointment } from '../models/appointment';
 })
 export class AppointmentService {
 
-  private apiUrl = 'http://localhost:8000/api/'; // Ajusta la URL según tu backend
+  private apiUrl = 'http://localhost:8000/api/'; 
 
   constructor(private http: HttpClient) {}
 

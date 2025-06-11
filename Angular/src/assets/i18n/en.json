@@ -1,11 +1,7 @@
 {
-    "APPOINTMENT_HISTORY": "Appointment History",
-    "DATE": "Date",
-    "FIRST_NAME": "First Name",
-    "LAST_NAME": "Last Name",
-    "TREATMENT": "Treatment",
-    "STATE": "State",
-    "CANCEL": "Cancel Appointment",
-    "CANCELLED_APPOINTMENT": "Cancelled Appointment"
-  }
-  
+  "WELCOME_ADMIN": "Welcome Admin",
+  "CREATE_USER": "Create User",
+  "CREATE_ROLE": "Create Role",
+  "EDIT_USER": "Edit Users",
+  "SIGN_OUT": "Sign out"
+}

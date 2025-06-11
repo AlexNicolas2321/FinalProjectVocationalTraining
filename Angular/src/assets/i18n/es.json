@@ -1,11 +1,7 @@
 {
-    "APPOINTMENT_HISTORY": "Historial de Citas",
-    "DATE": "Fecha",
-    "FIRST_NAME": "Nombre",
-    "LAST_NAME": "Apellido",
-    "TREATMENT": "Tratamiento",
-    "STATE": "Estado",
-    "CANCEL": "Cancelar Cita",
-    "CANCELLED_APPOINTMENT": "Cita cancelada"
-  }
-  
+  "WELCOME_ADMIN": "Bienvenido Admin",
+  "CREATE_USER": "Crear Usuario",
+  "CREATE_ROLE": "Crear Rol",
+  "EDIT_USER": "Editar Usuarios",
+  "SIGN_OUT": "Cerrar sesión"
+}
