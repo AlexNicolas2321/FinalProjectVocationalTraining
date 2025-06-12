@@ -17,4 +17,8 @@ export class ApiService {
   getExerciseData(activity: string, duration_minutes: number, weight_kg: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}exercise`, {activity,duration_minutes,weight_kg});
   }
+
+  getStatistics(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}statistics`);
+  }
 }

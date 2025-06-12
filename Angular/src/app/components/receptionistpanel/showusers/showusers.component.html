@@ -1,12 +1,13 @@
 <div class="container mt-5">
 
-  <div class="input-group mb-3">
+  <div class="input-group mb-3 w-50">
     <input
       type="text"
-      class="form-control"
+      class="form-control border-primary"
       placeholder="Buscar paciente por DNI..."
       [(ngModel)]="dni"
       (keyup.enter)="searchPatient()"
+      aria-label="Buscar paciente por DNI"
     />
     <button
       class="btn btn-primary"
@@ -26,21 +27,25 @@
   </div>
 
   <div *ngIf="showUserLists">
-    <h5 class="mb-3">Lista de Pacientes</h5>
+    <h5 class="mb-3 text-primary">Lista de Pacientes</h5>
 
-    <div class="row g-3" *ngIf="users.length > 0; else noPatients">
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let user of users">
-        <div class="card shadow-sm rounded-4 h-100">
-          <div class="card-body">
-            <h6 class="card-title">{{ user.first_name }} {{ user.last_name }}</h6>
-            <p class="card-text mb-1"><strong>DNI:</strong> {{ user.dni }}</p>
-            <p class="card-text mb-1"><strong>Teléfono:</strong> {{ user.phone }}</p>
-          </div>
-          <div class="card-footer text-end bg-transparent border-0">
-            <i class="bi bi-person-vcard fs-4 text-muted"></i>
-          </div>
-        </div>
-      </div>
+    <div *ngIf="users.length > 0; else noPatients" class="table-responsive shadow rounded">
+      <table class="table table-bordered align-middle m-0">
+        <thead class="table-primary text-white text-center">
+          <tr>
+            <th>Nombre</th>
+            <th>DNI</th>
+            <th>Teléfono</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users" class="bg-primary text-white">
+            <td class="bg-light text-dark fw-semibold">{{ user.first_name }} {{ user.last_name }}</td>
+            <td class="bg-light text-dark">{{ user.dni }}</td>
+            <td class="bg-light text-dark">{{ user.phone }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <ng-template #noPatients>
@@ -49,5 +54,5 @@
       </div>
     </ng-template>
   </div>
-  
+
 </div>

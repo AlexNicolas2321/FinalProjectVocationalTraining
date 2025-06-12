@@ -1,0 +1,51 @@
+<div class="container my-5">
+  <h2 class="mb-4 text-primary text-center fw-bold">Resumen Estadístico</h2>
+
+  <div class="table-responsive shadow rounded mb-4 w-50 mx-auto">
+    <table class="table table-striped table-hover align-middle mb-0" style="border: 1px solid #0d6efd;">
+      <tbody>
+        <tr>
+          <td class="fw-semibold">Usuarios totales</td>
+          <td class="text-primary fs-4 fw-semibold">
+            {{ dataApi.totalUsers?.[0]?.total_users || 0 }}
+          </td>
+        </tr>
+        <tr>
+          <td class="fw-semibold">Citas totales</td>
+          <td class="text-success fs-4 fw-semibold">
+            {{ dataApi.totalAppointments?.[0]?.total_appointments || 0 }}
+          </td>
+        </tr>
+        <tr>
+          <td class="fw-semibold">Tratamiento más usado</td>
+          <td class="text-warning fs-5 fw-semibold text-capitalize">
+            {{ dataApi.mostUsedTreatment?.name.replace('_', ' ') || 'N/A' }}
+            <small class="d-block">Usado {{ dataApi.mostUsedTreatment?.usage_count || 0 }} veces</small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="mb-3 text-primary text-center fw-bold">Estadísticas de Tratamientos</h3>
+  <div class="table-responsive shadow rounded w-75 mx-auto">
+    <table class="table table-striped table-hover align-middle mb-0" style="border: 1px solid #0d6efd;">
+      <thead class="table-primary text-primary">
+        <tr>
+          <th>Tratamiento</th>
+          <th>Veces Usado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let treatment of dataApi.treatmentStats">
+          <td class="fw-semibold text-capitalize">
+            {{ treatment.name.replace('_', ' ') }}
+          </td>
+          <td class="fw-semibold text-primary">
+            {{ treatment.usage_count }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -29,6 +29,8 @@ class AppointmentController extends AbstractController
     #[Route('/api/createAppointment', name: 'create_appointment', methods: ['POST'])]
     public function createAppointment(Request $request, EntityManagerInterface $em): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_PATIENT');
+
         $data = json_decode($request->getContent(), true);
 
         $patient = $em->getRepository(Patient::class)->findOneBy(['user' => $data['userId']]);
@@ -53,6 +55,10 @@ class AppointmentController extends AbstractController
     #[Route('/api/getAllAppointments', name: 'get_all_appointments', methods: ['GET'])]
     public function getAllAppointments(EntityManagerInterface $em): JsonResponse
     {
+        if (!$this->isGranted('ROLE_RECEPTIONIST') && !$this->isGranted('ROLE_DOCTOR')) {
+            throw $this->createAccessDeniedException('Access denied.');
+        }
+        
         $appointments = $em->getRepository(Appointment::class)->findAll();
 
 
@@ -88,6 +94,8 @@ class AppointmentController extends AbstractController
         Request $request,
         MailerInterface $mailer
     ): JsonResponse {
+        $this->denyAccessUnlessGranted('ROLE_RECEPTIONIST');
+
         $appointment = $em->getRepository(Appointment::class)->find($id);
         if (!$appointment) {
             return $this->json(['error' => 'Appointment not found.'], 404);
@@ -140,6 +148,8 @@ class AppointmentController extends AbstractController
     #[Route('/api/editAppointmentStatus/{id}', name: 'edit_appointment_status', methods: ['PATCH'])]
     public function editAppointmentStatus(int $id, EntityManagerInterface $em, Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_RECEPTIONIST');
+
         // Obtener la cita
         $appointment = $em->getRepository(Appointment::class)->find($id);
         $patient = $appointment->getPatient();
@@ -181,6 +191,8 @@ class AppointmentController extends AbstractController
     #[Route('/api/appointments/{id}/pdf', name: 'appointment_pdf', methods: ['GET'])]
     public function downloadPdf(int $id, AppointmentRepository $appointmentRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_RECEPTIONIST');
+
         $appointment = $appointmentRepository->find($id);
 
         if (!$appointment) {
@@ -214,6 +226,7 @@ class AppointmentController extends AbstractController
     #[Route('/api/getSpecificAppointments/{id}', name: 'get_specific_appointments', methods: ['GET'])]
     public function getSpecificAppointments(int $id, EntityManagerInterface $em): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_PATIENT');
 
 
 
@@ -245,6 +258,8 @@ class AppointmentController extends AbstractController
     #[Route('/api/cancelAppointment/{id}', name: 'cancel_appointment', methods: ['PATCH'])]
     public function cancelAppointment(int $id, EntityManagerInterface $em): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_PATIENT');
+
         $appointment = $em->getRepository(Appointment::class)->findOneBy(["id"=>$id]);
 
         if (!$appointment) {

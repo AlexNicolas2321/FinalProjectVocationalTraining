@@ -72,19 +72,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = [];
-
+    
         foreach ($this->userRoles as $userRole) {
-            // Suponiendo que getRole() devuelve un string con el nombre del rol
             $role = $userRole->getRole();
             if ($role) {
-                $roles[] = $role->getName();
+                // Poner en mayúsculas y añadir prefijo ROLE_
+                $roles[] = 'ROLE_' . strtoupper($role->getName());
             }
         }
-
-        // Devuelve solo roles únicos, para evitar duplicados
+    
+     
         return array_unique($roles);
     }
-
+    
 
 
     public function addUserRole(UserRole $userRole): self

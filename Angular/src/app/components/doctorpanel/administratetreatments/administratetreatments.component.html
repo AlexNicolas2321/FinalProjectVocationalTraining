@@ -5,30 +5,32 @@
     </div>
 
     <div class="card-body p-0">
-      <table *ngIf="treatments.length > 0" class="table table-striped table-bordered mb-0">
-        <thead class="table-dark">
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
-            <th>ID Doctor</th>
-            <th>Nombre Doctor</th>
-            <th>Apellido Doctor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let treatment of treatments">
-            <td>{{ treatment.id }}</td>
-            <td>{{ treatment.name }}</td>
-            <td>{{ treatment.description }}</td>
-            <td>{{ treatment.price | currency: 'EUR' }}</td>
-            <td>{{ treatment.doctorId }}</td>
-            <td>{{ treatment.doctor_first_name }}</td>
-            <td>{{ treatment.doctor_last_name }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div *ngIf="treatments.length > 0" class="table-responsive shadow rounded">
+        <table class="table table-bordered table-hover align-middle m-0">
+          <thead class="table-primary text-primary text-center">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>ID Doctor</th>
+              <th>Nombre Doctor</th>
+              <th>Apellido Doctor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let treatment of treatments" class="bg-primary text-white">
+              <td class="bg-light text-dark">{{ treatment.id }}</td>
+              <td class="bg-light text-dark fw-semibold">{{ treatment.name }}</td>
+              <td class="bg-light text-dark">{{ treatment.description }}</td>
+              <td class="bg-light text-dark">{{ treatment.price | currency: 'EUR' }}</td>
+              <td class="bg-light text-dark">{{ treatment.doctorId }}</td>
+              <td class="bg-light text-dark">{{ treatment.doctor_first_name }}</td>
+              <td class="bg-light text-dark">{{ treatment.doctor_last_name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <div *ngIf="treatments.length === 0" class="alert alert-warning m-3">
         No se encontraron tratamientos.
@@ -47,21 +49,21 @@
       <form (ngSubmit)="createTreatment()" #treatmentForm="ngForm" novalidate>
         
         <div class="mb-3">
-          <label for="name" class="form-label">Nombre del tratamiento</label>
+          <label for="name" class="form-label fw-semibold">Nombre del tratamiento</label>
           <input 
             type="text" 
             id="name" 
-            class="form-control" 
+            class="form-control border-success" 
             name="name" 
             [(ngModel)]="newTreatment.name" 
             required />
         </div>
 
         <div class="mb-3">
-          <label for="description" class="form-label">Descripción</label>
+          <label for="description" class="form-label fw-semibold">Descripción</label>
           <textarea 
             id="description" 
-            class="form-control" 
+            class="form-control border-success" 
             name="description" 
             [(ngModel)]="newTreatment.description" 
             rows="3" 
@@ -70,11 +72,11 @@
         </div>
 
         <div class="mb-3">
-          <label for="price" class="form-label">Precio (€)</label>
+          <label for="price" class="form-label fw-semibold">Precio (€)</label>
           <input 
             type="number" 
             id="price" 
-            class="form-control" 
+            class="form-control border-success" 
             name="price" 
             [(ngModel)]="newTreatment.price" 
             required 
@@ -83,9 +85,9 @@
         </div>
 
         <div class="mb-3">
-          <label for="doctor" class="form-label">Selecciona un Doctor</label>
+          <label for="doctor" class="form-label fw-semibold">Selecciona un Doctor</label>
           <select
-            class="form-select"
+            class="form-select border-success"
             id="doctor"
             [(ngModel)]="selectedDoctorId"
             name="doctor"

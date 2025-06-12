@@ -2,18 +2,39 @@
     <h2 class="mb-4 text-primary">Buscar Calorías y Ejercicios</h2>
   
     <div class="row g-3 mb-4">
-      <div class="col-md-4">
-        <input type="text" class="form-control" placeholder="Ejercicio (ej. correr)"
-               [(ngModel)]="activity" />
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <label for="activity" class="form-label">Ejercicio</label>
+          <input
+            id="activity"
+            type="text"
+            class="form-control"
+            placeholder="Ejercicio (ej. correr)"
+            [(ngModel)]="activity"
+          />
+        </div>
+        <div class="col-md-3">
+          <label for="duration" class="form-label">Duración (minutos)</label>
+          <input
+            id="duration"
+            type="number"
+            class="form-control"
+            placeholder="Duración (minutos)"
+            [(ngModel)]="duration"
+          />
+        </div>
+        <div class="col-md-3">
+          <label for="weight" class="form-label">Peso (kg)</label>
+          <input
+            id="weight"
+            type="number"
+            class="form-control"
+            placeholder="Peso (kg)"
+            [(ngModel)]="weight"
+          />
+        </div>
       </div>
-      <div class="col-md-3">
-        <input type="number" class="form-control" placeholder="Duración (minutos)"
-               [(ngModel)]="duration" />
-      </div>
-      <div class="col-md-3">
-        <input type="number" class="form-control" placeholder="Peso (kg)"
-               [(ngModel)]="weight" />
-      </div>
+      
       <div class="col-md-2">
         <button class="btn btn-primary w-100" (click)="searchExercise()" [disabled]="loading">Buscar</button>
       </div>

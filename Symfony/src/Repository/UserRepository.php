@@ -43,4 +43,15 @@ class UserRepository extends ServiceEntityRepository
         // Ejecutar la consulta y devolver el resultado como array asociativo
         return $conn->executeQuery($sql)->fetchAllAssociative();
     }
+
+    public function totalUsers(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT COUNT(*) AS total_users FROM user';
+
+        return $conn->executeQuery($sql)->fetchAllAssociative();
+    }
+    
+    
 }

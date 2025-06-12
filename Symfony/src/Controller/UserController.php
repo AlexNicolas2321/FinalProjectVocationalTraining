@@ -29,6 +29,9 @@ class UserController extends AbstractController
     #[Route('api/getAllUsers', name: 'app_users_list', methods: ['GET'])]
     public function listUsers(UserRepository $userRepository): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+
         $users = $userRepository->getAllUsers();
         return new JsonResponse($users);
     }
@@ -36,6 +39,10 @@ class UserController extends AbstractController
     #[Route('api/getUserByDni/{dni}', name: 'getUserByDni', methods: ['GET'])]
     public function getUserByDni(string $dni,EntityManagerInterface $em): JsonResponse
     {
+        if (!$this->isGranted('ROLE_RECEPTIONIST') && !$this->isGranted('ROLE_DOCTOR')) {
+            throw $this->createAccessDeniedException('Access denied.');
+        }
+
         $user = $em->getRepository(User::class)->findOneBy(['dni' => $dni]);
         $patient = $user->getPatient();
 
@@ -56,6 +63,9 @@ class UserController extends AbstractController
     #[Route('api/getAllPatients', name: 'get_all_patients', methods: ['GET'])]
     public function getAllPatients(): JsonResponse
     {
+        if (!$this->isGranted('ROLE_RECEPTIONIST') && !$this->isGranted('ROLE_DOCTOR')) {
+            throw $this->createAccessDeniedException('Access denied.');
+        }
         $data=[];
         $users = $this->em->getRepository(User::class)->findAll();
         foreach ($users as $user) {
@@ -79,6 +89,9 @@ class UserController extends AbstractController
     #[Route('/api/admin', name: 'create_admin', methods: ['POST'])]
     public function createAdmin(Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+
         $data = json_decode($request->getContent(), true);
 
         if (!$data || empty($data['dni']) || empty($data['password'])) {
@@ -113,6 +126,8 @@ class UserController extends AbstractController
     #[Route('/api/notAdmin', name: 'create_user_with_details', methods: ['POST'])]
     public function createUserWithDetails(Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $data = json_decode($request->getContent(), true);
 
         if (!$data || empty($data['dni']) || empty($data['password']) || empty($data['user_type'])) {
@@ -174,6 +189,9 @@ class UserController extends AbstractController
         UserRepository $userRepository,
         EntityManagerInterface $em
     ): JsonResponse {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $data = json_decode($request->getContent(), true);
     
         $user = $userRepository->find($data["id"]);
@@ -208,4 +226,5 @@ class UserController extends AbstractController
         ]);
     }
         
+    
 }

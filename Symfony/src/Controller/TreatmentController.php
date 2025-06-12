@@ -20,6 +20,8 @@ class TreatmentController extends AbstractController
     #[Route('/api/createTreatment', name: 'create_treatment', methods: ['POST'])]
     public function create(Request $request,EntityManagerInterface $entityManager): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_DOCTOR');
+
         $data = json_decode($request->getContent(), true);
         $doctor = $entityManager->getRepository(Doctor::class)->find($data['doctorId'] ?? null);
 
@@ -43,6 +45,7 @@ class TreatmentController extends AbstractController
     #[Route('/api/getAllTreatments', name: 'list_treatments', methods: ['GET'])]
     public function list(TreatmentRepository $repository): JsonResponse
     {
+
         $treatments = $repository->findAll();
        
         $data = array_map(function (Treatment $treatment) {
@@ -62,23 +65,4 @@ class TreatmentController extends AbstractController
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
-/*
-    #[Route('/{id}', name: 'get_treatment', methods: ['GET'])]
-    public function getTreatment(int $id, TreatmentRepository $repository): JsonResponse
-    {
-        $treatment = $repository->find($id);
-
-        if (!$treatment) {
-            return new JsonResponse(['error' => 'Tratamiento no encontrado'], Response::HTTP_NOT_FOUND);
-        }
-
-        return new JsonResponse([
-            'id' => $treatment->getId(),
-            'name' => $treatment->getName(),
-            'description' => $treatment->getDescription(),
-            'price' => $treatment->getPrice(),
-        ], Response::HTTP_OK);
-    }
-
-*/
     }

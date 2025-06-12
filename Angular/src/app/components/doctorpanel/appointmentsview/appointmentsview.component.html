@@ -5,36 +5,38 @@
     </div>
 
     <div class="card-body p-0">
-      <table *ngIf="appointments.length > 0" class="table table-striped table-bordered mb-0">
-        <thead class="table-dark">
-          <tr>
-            <th>Fecha</th>
-            <th>DNI Paciente</th>
-            <th>Nombre Doctor</th>
-            <th>Apellido Doctor</th>
-            <th>Tratamiento</th>
-            <th>Nombre Paciente</th>
-            <th>Apellido Paciente</th>
-            <th>Teléfono</th>
-            <th>Estado</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let appointment of appointments">
-            <td>{{ appointment.date || 'N/A' }}</td>
-            <td>{{ appointment.user_dni || 'N/A' }}</td>
-            <td>{{ appointment.doctor_first_name || 'N/A' }}</td>
-            <td>{{ appointment.doctor_last_name || 'N/A' }}</td>
-            <td>{{ appointment.treatment || 'N/A' }}</td>
-            <td>{{ appointment.patient_first_name || 'N/A' }}</td>
-            <td>{{ appointment.patient_last_name || 'N/A' }}</td>
-            <td>{{ appointment.patient_phone || 'N/A' }}</td>
-            <td>{{ appointment.state || 'N/A' }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div *ngIf="appointments.length > 0" class="table-responsive shadow rounded">
+        <table class="table table-bordered table-hover align-middle m-0">
+          <thead class="table-primary text-primary text-center">
+            <tr>
+              <th>Fecha</th>
+              <th>DNI Paciente</th>
+              <th>Nombre Doctor</th>
+              <th>Apellido Doctor</th>
+              <th>Tratamiento</th>
+              <th>Nombre Paciente</th>
+              <th>Apellido Paciente</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let appointment of appointments" class="bg-primary text-white">
+              <td class="bg-light text-dark">{{ appointment.date || 'N/A' }}</td>
+              <td class="bg-light text-dark">{{ appointment.user_dni || 'N/A' }}</td>
+              <td class="bg-light text-dark">{{ appointment.doctor_first_name || 'N/A' }}</td>
+              <td class="bg-light text-dark">{{ appointment.doctor_last_name || 'N/A' }}</td>
+              <td class="bg-light text-dark">{{ appointment.treatment || 'N/A' }}</td>
+              <td class="bg-light text-dark">{{ appointment.patient_first_name || 'N/A' }}</td>
+              <td class="bg-light text-dark">{{ appointment.patient_last_name || 'N/A' }}</td>
+              <td class="bg-light text-dark">{{ appointment.patient_phone || 'N/A' }}</td>
+              <td class="bg-light text-dark">{{ appointment.state || 'N/A' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <div *ngIf="appointments.length === 0" class="alert alert-warning m-3">
+      <div *ngIf="appointments.length === 0" class="alert alert-warning m-3 text-center">
         No se encontraron citas.
       </div>
     </div>

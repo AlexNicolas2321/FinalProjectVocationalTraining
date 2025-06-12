@@ -13,4 +13,14 @@ class AppointmentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Appointment::class);
     }
+
+    public function totalAppointments(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT COUNT(*) AS total_appointments FROM appointment';
+
+        return $conn->executeQuery($sql)->fetchAllAssociative();
+    }
+
 }
