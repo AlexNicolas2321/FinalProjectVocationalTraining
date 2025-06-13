@@ -147,7 +147,7 @@ class UserController extends AbstractController
                     $userRole = new UserRole();
                     $userRole->setRole($role);
                     $userRole->setUser($user);
-                    $user->addUserRole($userRole); // ahora sí es un UserRole
+                    $user->addUserRole($userRole); 
                 }
             }
         }

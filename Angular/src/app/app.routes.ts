@@ -22,7 +22,6 @@ import { ExerciseComponent } from './components/patientpanel/exercise/exercise.c
 import { StatisticsComponent } from './components/adminpanel/statistics/statistics.component';
 
 import { AdminGuard } from './guards/admin.guard';
-import { PatientGuard } from './guards/patient.guard';
 import { ReceptionistGuard } from './guards/receptionist.guard';
 import { DoctorGuard } from './guards/doctor.guard';
 

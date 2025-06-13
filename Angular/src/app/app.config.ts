@@ -9,6 +9,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([JwtInterceptor])) // ✅ aquí sí es válido
+    provideHttpClient(withInterceptors([JwtInterceptor])) 
   ]
 };
