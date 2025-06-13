@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AppointmentService } from '../../../services/appointment.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { jwtDecode } from 'jwt-decode';
 
 interface AppointmentData {
   id: number;
@@ -36,7 +37,10 @@ export class AppointmentsviewComponent {
   }
 
   loadAppointmentHistory() {
-    this.appointmentService.getAllAppointments().subscribe({
+    let token=(localStorage.getItem("token"));
+    if(token){
+      let user_id = jwtDecode<any>(token).user_id;
+    this.appointmentService.getSpecificAppointmentsDoctor(user_id).subscribe({
       next: (data: AppointmentData[]) => {
         this.appointments = data;
         console.log('Appointments obtained', this.appointments);
@@ -45,6 +49,7 @@ export class AppointmentsviewComponent {
         console.error('Error getting appointments', err);
       },
     });
+  }
   }
 
  

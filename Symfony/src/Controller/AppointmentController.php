@@ -112,7 +112,7 @@ class AppointmentController extends AbstractController
                 $invoice = $this->invoiceService->createInvoiceForAppointment($appointment);
 
                 $pdfContent = $invoice->getPdfFile();
-               if($data["email" !== null]){
+                
                 $email = (new Email())
                 ->from('epmticnotifications@gmail.com')
                 ->to($patientMail)
@@ -127,7 +127,7 @@ class AppointmentController extends AbstractController
                     'error' => 'No se pudo enviar el correo: ' . $e->getMessage()
                 ], 500);
             }
-               }
+               
             }
 
             $em->flush();
@@ -254,6 +254,41 @@ class AppointmentController extends AbstractController
 
         return new JsonResponse($data, 200);
     }
+
+    #[Route('/api/getSpecificAppointmentsDoctor/{id}', name: 'get_specific_appointments_doctor', methods: ['GET'])]
+    public function getSpecificAppointmentsDoctor(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $this->denyAccessUnlessGranted('ROLE_DOCTOR');
+    
+        $doctor = $em->getRepository(Doctor::class)->findOneBy(['user' => $id]);
+        if (!$doctor) {
+            return new JsonResponse(['error' => 'Doctor no encontrado'], 404);
+        }
+    
+        $appointments = $em->getRepository(Appointment::class)->findBy(['doctor' => $doctor]);
+    
+        $data = [];
+    
+        foreach ($appointments as $appointment) {
+            $patient = $appointment->getPatient();
+            $treatment = $doctor->getTreatment();
+            $user = $patient->getUser();
+            $data[] = [
+                'date' => $appointment->getDate()->format('Y-m-d H:i:s'),
+                'user_dni' => $user ? $user->getDni() : null,
+                'doctor_first_name' => $doctor->getFirstName(),
+                'doctor_last_name' => $doctor->getLastName(),
+                'treatment' => $treatment ? $treatment->getName() : null,
+                'patient_first_name' => $patient ? $patient->getFirstName() : null,
+                'patient_last_name' => $patient ? $patient->getLastName() : null,
+                'patient_phone' => $patient ? $patient->getPhone() : null,
+                'state' => $appointment->getStatus(),
+            ];
+        }
+    
+        return new JsonResponse($data, 200);
+    }
+    
 
     #[Route('/api/cancelAppointment/{id}', name: 'cancel_appointment', methods: ['PATCH'])]
     public function cancelAppointment(int $id, EntityManagerInterface $em): JsonResponse

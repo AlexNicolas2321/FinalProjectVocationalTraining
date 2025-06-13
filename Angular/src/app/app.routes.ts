@@ -80,7 +80,7 @@ export const routes: Routes = [
     ],
   },
   // Ruta para página no autorizada
-  { path: 'unauthorized', component: SigninComponent },
+{ path: 'unauthorized', redirectTo: '/patient/home', pathMatch: 'full' },
   // Ruta catch-all 
   { path: '**', redirectTo: 'unauthorized' },
 ];

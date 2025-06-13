@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   selectedTreatmentId: number = 0 ;
   message: string = '';
   error: string = '';
+  isPatient: boolean = false;
 
   constructor(
     private treatmentService: TreatmentService,
@@ -32,6 +33,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.setMinFecha();
     this.decodeToken();
+    this.isPatient = this.hasPatientRole(); 
+
 
     this.treatmentService.getAllTreatments().subscribe({
       next: (data: Treatment[]) => {
@@ -40,12 +43,12 @@ export class HomeComponent implements OnInit {
           if (treatment.name == "limpieza_bucal") {
             treatment.img = "http://localhost:8000/img/limpieza_bucal.jpg";
           }
-          if (treatment.name == "cita") {
-            treatment.img = "http://localhost:8000/img/cita.jpg";
+          if (treatment.name == "plantillas_ortopédicas") {
+            treatment.img = "http://localhost:8000/img/plantillas_ortopedicas.jpg";
 
           }
-          if (treatment.name === "ortodoncia") {
-            treatment.img = "http://localhost:8000/img/ortodoncia.jpg";
+          if (treatment.name === "revisión_auditiva") {
+            treatment.img = "http://localhost:8000/img/revision_auditiva.jpg";
 
           }
         })
@@ -54,7 +57,28 @@ export class HomeComponent implements OnInit {
       error: err => console.error('Error al obtener tratamientos', err)
     });
   }
+  formatTreatmentName(name: string): string {
+    // Reemplaza guiones bajos por espacios
+    const nameWithSpaces = name.replace(/_/g, ' ');
+    
+    // Capitaliza solo la primera letra de toda la cadena
+    return nameWithSpaces.charAt(0).toUpperCase() + nameWithSpaces.slice(1);
+  }
+  
+  
+  hasPatientRole(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+  
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded.roles?.includes('ROLE_PATIENT');
+    } catch {
+      return false;
+    }
+  }
 
+  
   setMinFecha(): void {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -88,50 +112,54 @@ export class HomeComponent implements OnInit {
   }
   
   submitForm(): void {
-    this.selectedTreatmentId = Number(this.selectedTreatmentId); // Asegura que sea número
-
-    console.log('ID seleccionado:', this.selectedTreatmentId);
-
+    this.selectedTreatmentId = Number(this.selectedTreatmentId);
+  
     const selectedTreatment = this.treatments.find(t => t.id === this.selectedTreatmentId);
-
-
+  
     if (!selectedTreatment) {
       this.error = 'Tratamiento no encontrado';
       this.message = '';
-      console.error(this.error);
       return;
     }
-    console.log(selectedTreatment);
+  
     if (selectedTreatment.doctorId === null || selectedTreatment.doctorId === undefined) {
       this.error = 'El tratamiento no tiene un doctor asignado';
       this.message = '';
-      console.error(this.error);
       return;
     }
-
+  
     this.doctorId = selectedTreatment.doctorId;
-
     const fechaCompleta = `${this.fecha}T${this.horaSeleccionada}:00`;
-
+  
     const appointment = {
       userId: this.userId,
       date: fechaCompleta,
       doctorId: this.doctorId,
     };
-
-    console.log('Cita enviada:', appointment);
-
+  
     this.appointmentService.createAppointment(appointment).subscribe({
       next: res => {
         this.message = '¡Cita pedida!';
         this.error = '';
         console.log('Respuesta del servidor:', res);
+  
+        // Cierra el modal
+        const modalEl = document.getElementById('appointmentModal');
+        if (modalEl) {
+          (modalEl as any).classList.remove('show');
+          (modalEl as any).setAttribute('aria-hidden', 'true');
+          (modalEl as any).style.display = 'none';
+          const modalBackdrop = document.querySelector('.modal-backdrop');
+          if (modalBackdrop) modalBackdrop.remove();
+          document.body.classList.remove('modal-open');
+          document.body.style.removeProperty('padding-right');
+        }
       },
       error: err => {
         this.error = 'Error al pedir cita: ' + (err.error?.error || 'Servidor no disponible');
         this.message = '';
-        console.error(this.error);
       }
     });
   }
+  
 }

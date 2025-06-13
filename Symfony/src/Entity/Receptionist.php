@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReceptionistRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(options: ["charset" => "utf8mb4", "collate" => "utf8mb4_unicode_ci"])]
 #[ORM\Entity(repositoryClass: ReceptionistRepository::class)]
 class Receptionist
 {

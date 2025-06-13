@@ -1,11 +1,23 @@
+
 <!-- Hero Section -->
 <header class="bg-primary text-white text-center py-5" style="background: linear-gradient(135deg, #007bff, #0056b3);">
     <div class="container">
       <h1 class="display-4 fw-bold mb-3">Sonríe con confianza</h1>
-      <p class="lead mb-4">Cuidamos tu salud bucal con tecnología avanzada y un equipo humano cercano.</p>
-      <a class="btn btn-light btn-lg shadow" data-bs-toggle="modal" data-bs-target="#appointmentModal" aria-label="Pide tu cita">
-        Pide tu cita <i class="bi bi-calendar-check ms-2"></i>
-      </a>
+      <p class="lead mb-4">Cuidamos tu salud prestando servicios con tecnología avanzada y un equipo humano cercano.</p>
+      <a
+      *ngIf="isPatient"
+      class="btn btn-light btn-lg shadow"
+      data-bs-toggle="modal"
+      data-bs-target="#appointmentModal"
+      aria-label="Pide tu cita"
+    >
+      Pide tu cita <i class="bi bi-calendar-check ms-2"></i>
+    </a>
+    
+    <div *ngIf="!isPatient" class="text-danger mt-2 small">
+      Inicia sesión como paciente para poder pedir una cita.
+    </div>
+    
     </div>
   </header>
   
@@ -14,21 +26,44 @@
       <div class="row">
         <div *ngFor="let treatment of treatments" class="col-md-4 mb-4">
           <div class="card h-100 shadow-sm hover-shadow">
-            <img [src]="treatment.img" class="card-img-top mx-auto mt-3" style="width: 60px; height: 60px; object-fit: contain;" [alt]="treatment.name">
+            <img 
+  [src]="treatment.img" 
+  class="card-img-top mx-auto mt-3 w-50" 
+  style="object-fit: contain;" 
+  [alt]="treatment.name">
+
             <div class="card-body d-flex flex-column">
-              <h5 class="card-title fw-bold">{{ treatment.name }}</h5>
+              <h5>{{ formatTreatmentName(treatment.name) }}</h5>
               <p class="card-text text-muted flex-grow-1">{{ treatment.description }}</p>
               <p class="mb-1"><strong>Doctor:</strong> {{ treatment.doctor_first_name }} {{ treatment.doctor_last_name }}</p>
               <p class="mb-3"><strong>Precio:</strong> {{ treatment.price | currency:'EUR':'symbol':'1.2-2' }}</p>
-              <button class="btn btn-primary mt-auto" data-bs-toggle="modal" data-bs-target="#appointmentModal" (click)="selectTreatment(treatment.id!)">
+  
+              <!-- Botón de cita -->
+              <button
+                class="btn btn-primary mt-auto"
+                [disabled]="!isPatient"
+                data-bs-toggle="modal"
+                data-bs-target="#appointmentModal"
+                (click)="selectTreatment(treatment.id!)">
                 Pedir cita
               </button>
+  
+              <!-- Mensaje si no es paciente -->
+              <div *ngIf="!isPatient" class="text-danger small mt-2">
+                Inicia sesión como paciente para pedir una cita.
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
+  
+  <div class="container mt-4" *ngIf="message || error">
+    <div class="alert alert-success" *ngIf="message">{{ message }}</div>
+    <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+  </div>
+  
   
   <!-- Modal Bootstrap -->
   <div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
@@ -69,7 +104,7 @@
               <select id="tratamiento" name="tratamiento" class="form-select" [(ngModel)]="selectedTreatmentId"
                 required>
                 <option *ngFor="let tratamiento of treatments" [value]="tratamiento.id">
-                  {{ tratamiento.name }}
+                  <h5>{{ formatTreatmentName(tratamiento.name) }}</h5>
                 </option>
               </select>
             </div>

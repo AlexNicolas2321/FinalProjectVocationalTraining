@@ -43,7 +43,7 @@
     $this->entityManager->flush();
 
     $patientName = $patient->getFirstName() . ' ' . $patient->getLastName();
-    $doctorName = $doctor->getFirstName() . ' ' . $patient->getLastName();
+    $doctorName = $doctor->getFirstName() . ' ' . $doctor->getLastName();
     $treatmentName = $doctor->getTreatment()->getName();
 
     $pdfBinaryContent = $this->generatePdf($invoice, $patientName,$doctorName,$treatmentName);

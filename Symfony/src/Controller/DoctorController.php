@@ -12,6 +12,8 @@ class DoctorController extends AbstractController
     #[Route('/api/getAllDoctors', name: 'get_doctors', methods: ['GET'])]
     public function getDoctors(DoctorRepository $doctorRepository): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_DOCTOR');
+
         $doctors = $doctorRepository->findAll();
 
         $data = [];

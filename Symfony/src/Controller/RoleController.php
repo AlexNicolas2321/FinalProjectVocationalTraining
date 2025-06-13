@@ -17,6 +17,8 @@ class RoleController extends AbstractController
     #[Route('/api/getAllRoles', name: 'get_all_roles', methods: ['GET'])]
     public function getAllRoles(RoleRepository $roleRepository): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $roles = $roleRepository->findAll();
 
         $data = [];
@@ -33,6 +35,8 @@ class RoleController extends AbstractController
     
     #[Route('/api/createRole', name: 'create_roles', methods: ['POST'])]
     public function createRole(EntityManagerInterface $em,Request $request): JsonResponse{
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $data = json_decode($request->getContent(), true);
 
         $role = new Role();

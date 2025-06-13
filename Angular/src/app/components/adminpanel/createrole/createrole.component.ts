@@ -33,29 +33,33 @@ export class CreateroleComponent implements OnInit {
       }
     });
   }
-
+  onInputChange() {
+    this.message = '';
+    this.messageType = '';
+  }
+  
   createRole() {
     const trimmedName = this.name.trim();
-
+  
     if (!trimmedName) {
-      this.message = 'Please enter a valid role name.';
+      this.message = 'Por favor, ingresa un nombre válido para el rol.';
       this.messageType = 'error';
       return;
     }
-
+  
     this.userService.createRole(trimmedName).subscribe({
       next: res => {
-        this.message = 'Role created successfully!';
+        this.message = '¡Rol creado exitosamente!';
         this.messageType = 'success';
         this.name = '';
         this.loadRoles(); // actualizar lista
       },
       error: err => {
         console.error('Error creating role:', err);
-        this.message = 'Failed to create role.';
+        this.message = 'Error al crear el rol.';
         this.messageType = 'error';
       }
     });
-  }
+  }  
 
 }

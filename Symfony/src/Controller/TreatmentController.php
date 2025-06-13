@@ -46,6 +46,8 @@ class TreatmentController extends AbstractController
     public function list(TreatmentRepository $repository): JsonResponse
     {
 
+       
+ 
         $treatments = $repository->findAll();
        
         $data = array_map(function (Treatment $treatment) {

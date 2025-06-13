@@ -14,6 +14,8 @@ class StatisticsController extends AbstractController
     #[Route('/api/statistics', name: 'api_statistics', methods: ['GET'])]
     public function getStatistics(UserRepository $userRepository,AppointmentRepository $appointmentRepository,TreatmentRepository $treatmentRepository): JsonResponse {
         
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $this->json([
             'totalUsers' => $userRepository->totalUsers(),
             'totalAppointments' => $appointmentRepository->totalAppointments(),
