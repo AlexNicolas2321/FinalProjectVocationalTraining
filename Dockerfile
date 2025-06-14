@@ -42,4 +42,4 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 EXPOSE 8000
 
 # Iniciar el servidor Symfony
-CMD ["symfony", "local:server:start", "--no-tls", "--allow-http", "--port=8000", "--allow-all-ip"]
+CMD ["symfony", "local:server:start", "--no-tls", "--allow-http", "--port=8000", "--allow-all-ip", "--document-root=public"]
