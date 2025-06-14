@@ -33,7 +33,9 @@ export class ModifiedappointmentsComponent {
   ){}
 
  
-  
+  dni: string = '';
+  allAppointments: AppointmentData[] = [];
+    
   appointments: AppointmentData[] = [];
   
   ngOnInit(){
@@ -41,20 +43,34 @@ export class ModifiedappointmentsComponent {
     
   }
 
-  loadAppointmentHistory(){
+
+  loadAppointmentHistory() {
     this.appointmentService.getAllAppointments().subscribe({
-      next : ($data : AppointmentData[])=>{
-        this.appointments=$data;
-        console.log('tratamientos obtenidos',this.appointments);      
+      next: (data: AppointmentData[]) => {
+        this.appointments = data;
+        this.allAppointments = data;
+        console.log('tratamientos obtenidos', this.appointments);      
       },
-      error : err =>{ console.error('Error al obtener tratamientos', err)
-
-      }
-
-      
-    })
+      error: err => console.error('Error al obtener tratamientos', err)
+    });
   }
-
+  
+  refreshList(): void {
+    this.appointments = this.allAppointments;
+    this.dni = '';
+  }
+  
+  searchPatient(): void {
+    const trimmedDni = this.dni.trim();
+    if (!trimmedDni) {
+      this.appointments = this.allAppointments;
+      return;
+    }
+  
+    this.appointments = this.allAppointments.filter(
+      appt => appt.user_dni && appt.user_dni.includes(trimmedDni)
+    );
+  }
   updateStatus(id: number, status: string) {
     this.appointmentService.editeAppointmentStatus(id, status).subscribe({
       next: (res) => {

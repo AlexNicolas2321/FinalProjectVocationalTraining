@@ -1,4 +1,32 @@
+
 <div class="container mt-5">
+  <div class="input-group mb-3 w-50">
+    <input
+      type="text"
+      class="form-control border-primary"
+      placeholder="Buscar paciente por DNI..."
+      [(ngModel)]="dni"
+      (keyup.enter)="searchPatient()"
+      aria-label="Buscar paciente por DNI"
+    />
+    <button
+      class="btn btn-primary"
+      type="button"
+      (click)="searchPatient()"
+    >
+      Buscar
+    </button>
+    <button
+      class="btn btn-secondary ms-2"
+      type="button"
+      (click)="refreshList()"
+      title="Mostrar todos los pacientes"
+    >
+      Refrescar
+    </button>
+  </div>
+  
+  
   <div class="card shadow-sm rounded-4">
     <div class="card-header bg-dark text-white rounded-top-4">
       <h5 class="mb-0">Historial de Citas</h5>
