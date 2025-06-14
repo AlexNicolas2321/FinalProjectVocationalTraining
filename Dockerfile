@@ -28,3 +28,15 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash && mv /root/.symfony*/
 
 # Establecer directorio de trabajo
 WORKDIR /var/www/symfony
+
+# Copiar el código fuente
+COPY . .
+
+# Instalar dependencias Symfony
+RUN composer install --no-interaction
+
+# Exponer el puerto que usará el servidor
+EXPOSE 80
+
+# Comando que se ejecuta al iniciar el contenedor
+CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
