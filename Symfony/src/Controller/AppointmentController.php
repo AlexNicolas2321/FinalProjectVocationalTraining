@@ -26,6 +26,13 @@ class AppointmentController extends AbstractController
     {
         $this->invoiceService = $invoiceService;
     }
+    #[Route('/test', name: 'app_test')]
+public function test(): Response
+{
+    return new Response('El backend funciona correctamente');
+}
+
+
     #[Route('/api/createAppointment', name: 'create_appointment', methods: ['POST'])]
     public function createAppointment(Request $request, EntityManagerInterface $em): JsonResponse
     {
