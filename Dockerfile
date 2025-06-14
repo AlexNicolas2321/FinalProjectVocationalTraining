@@ -11,14 +11,17 @@ RUN apt-get update && apt-get install -y \
     libmariadb-dev \
     unzip \
     git \
-    curl
+    curl \
+    zip \
+    libzip-dev
 
 # Instalar extensiones PHP necesarias
 RUN docker-php-ext-install \
     intl \
     mysqli \
     pdo \
-    pdo_mysql
+    pdo_mysql \
+    zip
 
 # Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -29,14 +32,14 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash && mv /root/.symfony*/
 # Establecer directorio de trabajo
 WORKDIR /var/www/symfony
 
-# Copiar el código fuente
+# Copiar archivos del proyecto
 COPY . .
 
-# Instalar dependencias Symfony
-RUN composer install --no-interaction
+# Instalar dependencias PHP
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Exponer el puerto que usará el servidor
-EXPOSE 80
+# Exponer el puerto
+EXPOSE 8000
 
-# Comando que se ejecuta al iniciar el contenedor
-CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
+# Iniciar el servidor Symfony
+CMD ["symfony", "local:server:start", "--no-tls", "--allow-http", "--port=8000", "--allow-all-ip"]
