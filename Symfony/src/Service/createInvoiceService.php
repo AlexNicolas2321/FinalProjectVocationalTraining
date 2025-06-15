@@ -111,7 +111,7 @@ private function generatePdf(Invoice $invoice, string $patientName, string $doct
         </style>
     </head>
     <body>
-        <h1>Factura</h1>
+        <h1>Presupuesto</h1>
 
         <div class="invoice-header">
             <p><strong>Paciente:</strong> ' . htmlspecialchars($patientName) . '</p>

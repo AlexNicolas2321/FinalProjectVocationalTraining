@@ -27,9 +27,15 @@ class AppointmentController extends AbstractController
         $this->invoiceService = $invoiceService;
     }
     #[Route('/test', name: 'app_test')]
-public function test(): Response
+    public function test(): Response
+    {
+        return new Response('El backend funciona correctamente');
+    }
+
+    #[Route('/', name: 'homepage')]
+public function home(): Response
 {
-    return new Response('El backend funciona correctamente');
+    return new Response('<h1>Bienvenido a la página principal</h1>');
 }
 
 
@@ -65,7 +71,7 @@ public function test(): Response
         if (!$this->isGranted('ROLE_RECEPTIONIST') && !$this->isGranted('ROLE_DOCTOR')) {
             throw $this->createAccessDeniedException('Access denied.');
         }
-        
+
         $appointments = $em->getRepository(Appointment::class)->findAll();
 
 
@@ -119,22 +125,21 @@ public function test(): Response
                 $invoice = $this->invoiceService->createInvoiceForAppointment($appointment);
 
                 $pdfContent = $invoice->getPdfFile();
-                
-                $email = (new Email())
-                ->from('epmticnotifications@gmail.com')
-                ->to($patientMail)
-                ->subject('Cita confirmada - Factura adjunta')
-                ->text('Hola, tu cita ha sido confirmada. La factura está adjunta a este correo.')
-                ->attach($pdfContent, 'factura.pdf', 'application/pdf');
 
-            try {
-                $mailer->send($email);
-            } catch (\Throwable $e) {
-                return $this->json([
-                    'error' => 'No se pudo enviar el correo: ' . $e->getMessage()
-                ], 500);
-            }
-               
+                $email = (new Email())
+                    ->from('epmticnotifications@gmail.com')
+                    ->to($patientMail)
+                    ->subject('Cita confirmada - Presupuesto adjunta')
+                    ->text('Hola, tu cita ha sido confirmada. La Presupuesto está adjunta a este correo.')
+                    ->attach($pdfContent, 'factura.pdf', 'application/pdf');
+
+                try {
+                    $mailer->send($email);
+                } catch (\Throwable $e) {
+                    return $this->json([
+                        'error' => 'No se pudo enviar el correo: ' . $e->getMessage()
+                    ], 500);
+                }
             }
 
             $em->flush();
@@ -266,16 +271,16 @@ public function test(): Response
     public function getSpecificAppointmentsDoctor(int $id, EntityManagerInterface $em): JsonResponse
     {
         $this->denyAccessUnlessGranted('ROLE_DOCTOR');
-    
+
         $doctor = $em->getRepository(Doctor::class)->findOneBy(['user' => $id]);
         if (!$doctor) {
             return new JsonResponse(['error' => 'Doctor no encontrado'], 404);
         }
-    
+
         $appointments = $em->getRepository(Appointment::class)->findBy(['doctor' => $doctor]);
-    
+
         $data = [];
-    
+
         foreach ($appointments as $appointment) {
             $patient = $appointment->getPatient();
             $treatment = $doctor->getTreatment();
@@ -292,17 +297,17 @@ public function test(): Response
                 'state' => $appointment->getStatus(),
             ];
         }
-    
+
         return new JsonResponse($data, 200);
     }
-    
+
 
     #[Route('/api/cancelAppointment/{id}', name: 'cancel_appointment', methods: ['PATCH'])]
     public function cancelAppointment(int $id, EntityManagerInterface $em): JsonResponse
     {
         $this->denyAccessUnlessGranted('ROLE_PATIENT');
 
-        $appointment = $em->getRepository(Appointment::class)->findOneBy(["id"=>$id]);
+        $appointment = $em->getRepository(Appointment::class)->findOneBy(["id" => $id]);
 
         if (!$appointment) {
             return new JsonResponse(['message' => 'Appointment not found'], 404);

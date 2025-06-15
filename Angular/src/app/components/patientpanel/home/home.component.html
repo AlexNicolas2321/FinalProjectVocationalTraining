@@ -20,6 +20,11 @@
     
     </div>
   </header>
+
+  <div class="container mt-4" *ngIf="message || error">
+    <div class="alert alert-success" *ngIf="message">{{ message }}</div>
+    <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+  </div>
   
   <section class="py-5 bg-white">
     <div class="container">
@@ -59,10 +64,7 @@
     </div>
   </section>
   
-  <div class="container mt-4" *ngIf="message || error">
-    <div class="alert alert-success" *ngIf="message">{{ message }}</div>
-    <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
-  </div>
+
   
   
   <!-- Modal Bootstrap -->

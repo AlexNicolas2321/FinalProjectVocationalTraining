@@ -74,7 +74,7 @@ export class ModifiedappointmentsComponent {
   updateStatus(id: number, status: string) {
     this.appointmentService.editeAppointmentStatus(id, status).subscribe({
       next: (res) => {
-       
+       // console.log(id);
         const appointment = this.appointments.find(a => a.id === id);
         if (appointment) {
           appointment.state = status;

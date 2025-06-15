@@ -27,8 +27,8 @@ export class ChatboxComponent {
       expanded: false
     },
     {
-      question: '¿Cuándo recibo la factura?',
-      answer: 'Inmediatamente después de pagar se le entregará una copia física, además de mandarsele a su correo digitalmente en el caso de tener el correo registrado.',
+      question: '¿Cuándo recibo el presupuesto?',
+      answer: 'Inmediatamente al confirmarse la cita, además la recibira al correo con un texto de cita confirmada.',
       expanded: false
     }
   ];

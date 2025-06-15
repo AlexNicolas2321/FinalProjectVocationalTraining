@@ -62,7 +62,16 @@ ngOnInit(){
     this.treatmentService.createTreatment(newTreatment).subscribe({
 
       next: (data) =>{
-        console.log("usuario creado"+data);
+      //  console.log("usuario creado"+data);
+      this.treatmentService.getAllTreatments().subscribe({
+        next: (data) => {
+          this.treatments = data;
+        },
+        error: (err) => {
+          console.log("Error al recargar tratamientos", err);
+        }
+      });
+      
       },
       error: (err) =>{
         console.log("error",err);

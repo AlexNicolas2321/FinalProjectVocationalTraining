@@ -3,7 +3,7 @@ version: '3.8'
 services:
   symfony-app:
     build: 
-      context: .    # Ubicación del Dockerfile
+      context: .   
       dockerfile: Dockerfile
     container_name: symfony-linux
     volumes:
@@ -20,13 +20,13 @@ services:
       - mysql
 
   mysql:
-    image: mysql:8.0    # Imagen oficial de MySQL
+    image: mysql:8.0    
     container_name: mysql_sym
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: dawdb
     volumes:
-      - ./dataMYSQL:/var/lib/mysql  # Mapeo de los datos de MySQL al contenedor
+      - ./dataMYSQL:/var/lib/mysql  
     ports:
       - "3306:3306"
     networks:

@@ -32,7 +32,7 @@ export class SigninComponent {
   onSubmit() {
     this.authenticationService.signIn(this.credentials).subscribe({
       next: (res) => {
-        console.log('Response from API:', res); // <-- para verificar qué trae exactamente
+        console.log('Response from API:', res); 
         if (res.token && typeof res.token === 'string') {
           localStorage.setItem('token', res.token);
           const decodedToken:CustomJwtPayload = jwtDecode(res.token);

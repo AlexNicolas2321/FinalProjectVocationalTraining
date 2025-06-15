@@ -37,7 +37,6 @@ class LoginController extends AbstractController
             return new JsonResponse(['error' => 'DNI and password are required'], 400);
         }
 
-        // Buscar usuario por DNI
         $user = $this->em->getRepository(User::class)->findOneBy(['dni' => $dni]);
         
         $payload=[
@@ -51,12 +50,10 @@ class LoginController extends AbstractController
             return new JsonResponse(['error' => 'Invalid credentials'], 401);
         }
 
-        // Verificar contraseña
         if (!$this->passwordHasher->isPasswordValid($user, $password)) {
             return new JsonResponse(['error' => 'Invalid credentials'], 401);
         }
 
-        // Generar token JWT
         $token = $this->jwtManager->createFromPayload($user,$payload);
         
         return new JsonResponse(['token'=>$token]);    

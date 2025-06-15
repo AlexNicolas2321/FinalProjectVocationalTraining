@@ -17,10 +17,10 @@
           </td>
         </tr>
         <tr>
-          <td class="fw-semibold">Tratamiento más usado</td>
+          <td class="fw-semibold">Tratamiento más Solicitado</td>
           <td class="text-warning fs-5 fw-semibold text-capitalize">
             {{ dataApi.mostUsedTreatment?.name.replace('_', ' ') || 'N/A' }}
-            <small class="d-block">Usado {{ dataApi.mostUsedTreatment?.usage_count || 0 }} veces</small>
+            <small class="d-block">Solicitado {{ dataApi.mostUsedTreatment?.usage_count || 0 }} veces</small>
           </td>
         </tr>
       </tbody>
@@ -33,7 +33,7 @@
       <thead class="table-primary text-primary">
         <tr>
           <th>Tratamiento</th>
-          <th>Veces Usado</th>
+          <th>Veces solicitado</th>
         </tr>
       </thead>
       <tbody>

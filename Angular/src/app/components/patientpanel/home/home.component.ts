@@ -141,7 +141,7 @@ export class HomeComponent implements OnInit {
       next: res => {
         this.message = '¡Cita pedida!';
         this.error = '';
-        console.log('Respuesta del servidor:', res);
+        //console.log('Respuesta del servidor:', res);
   
         // Cierra el modal
         const modalEl = document.getElementById('appointmentModal');
@@ -157,7 +157,7 @@ export class HomeComponent implements OnInit {
       },
       error: err => {
         this.error = 'Error al pedir cita: ' + (err.error?.error || 'Servidor no disponible');
-        this.message = '';
+        this.message = 'cita no pedida  ';
       }
     });
   }
