@@ -131,7 +131,7 @@ public function home(): Response
                     ->to($patientMail)
                     ->subject('Cita confirmada - Presupuesto adjunta')
                     ->text('Hola, tu cita ha sido confirmada. La Presupuesto está adjunta a este correo.')
-                    ->attach($pdfContent, 'factura.pdf', 'application/pdf');
+                    ->attach($pdfContent, 'presupuesto.pdf', 'application/pdf');
 
                 try {
                     $mailer->send($email);
